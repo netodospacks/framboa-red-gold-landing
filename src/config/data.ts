@@ -55,7 +55,7 @@ export const menuData = {
   combos: [
     {
       id: "1",
-      name: "Cardápio 1 - Mesa de Mãe",
+      name: "Mesa de Mãe",
       price: "R$ 1.279,00",
       priceValue: 1279,
       desc: "Menu completo para até 15 pessoas, com clássicos irresistíveis.",
@@ -75,7 +75,7 @@ export const menuData = {
     },
     {
       id: "2",
-      name: "Cardápio 2 - Domingo com a Mãe",
+      name: "Domingo com a Mãe",
       price: "R$ 1.379,00",
       priceValue: 1379,
       desc: "Menu especial com Bacalhau e Camarão para 15 pessoas.",
@@ -95,7 +95,7 @@ export const menuData = {
     },
     {
       id: "3",
-      name: "Cardápio 3 - Mãe Merece",
+      name: "Mãe Merece",
       price: "R$ 1.479,00",
       priceValue: 1479,
       desc: "Sofisticação com Filé Mignon e Camarão para grandes encontros.",
@@ -115,7 +115,7 @@ export const menuData = {
     },
     {
       id: "4",
-      name: "Cardápio 4 - do Jeito que a Mãe faz",
+      name: "do Jeito que a Mãe faz",
       price: "R$ 1.589,00",
       priceValue: 1589,
       desc: "O banquete supremo com Pescada e Camarão para 15 convidados.",
