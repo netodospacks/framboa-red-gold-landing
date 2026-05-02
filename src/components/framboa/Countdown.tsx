@@ -39,36 +39,23 @@ const Countdown = () => {
   ];
 
   return (
-    <section className="container mt-12 md:mt-16">
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-primary p-8 text-primary-foreground shadow-wine md:p-14 text-center flex flex-col items-center">
-        <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-accent/20 blur-3xl" />
-        <div className="absolute -bottom-20 -left-10 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
-
-        <div className="relative z-10 max-w-2xl flex flex-col items-center">
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-background/10 px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-accent backdrop-blur-sm border border-accent/20">
-            <Heart className="h-3.5 w-3.5 fill-accent text-accent" /> 
-            <span>Especial</span>
-          </div>
-          
-          <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl text-gradient-gold">
-            Dia das Mães
-          </h2>
-          
-          <p className="mt-4 text-base md:text-lg text-primary-foreground/85 max-w-lg">
-            Um momento inesquecível merece um sabor à altura. O contador já começou para o domingo mais especial do ano!
-          </p>
+    <section className="container mt-6 md:mt-8">
+      <div className="mx-auto max-w-sm rounded-2xl bg-white p-5 shadow-md border border-accent/20 text-center flex flex-col items-center">
+        <div className="flex items-center gap-2 mb-3">
+          <Heart className="h-4 w-4 text-primary fill-primary" />
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Especial Dia das Mães</span>
         </div>
-
-        <div className="relative z-10 mt-10 grid grid-cols-4 gap-3 md:gap-6">
+        
+        <div className="grid grid-cols-4 gap-2 w-full">
           {items.map((it) => (
             <div
               key={it.label}
-              className="min-w-[72px] rounded-2xl border border-accent/30 bg-background/10 px-3 py-4 md:px-5 md:py-6 backdrop-blur-md md:min-w-[100px] shadow-sm transition-transform hover:scale-105"
+              className="flex flex-col items-center rounded-xl bg-secondary/30 border border-border/50 py-2.5 shadow-sm"
             >
-              <div className="font-display text-3xl font-bold tabular-nums text-accent md:text-5xl">
+              <div className="font-display text-2xl font-bold tabular-nums text-primary">
                 {String(it.value).padStart(2, "0")}
               </div>
-              <div className="mt-2 text-[10px] uppercase tracking-[0.3em] text-primary-foreground/70 md:text-xs">
+              <div className="text-[9px] uppercase tracking-widest text-muted-foreground font-semibold mt-0.5">
                 {it.label}
               </div>
             </div>

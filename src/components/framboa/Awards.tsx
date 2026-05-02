@@ -23,31 +23,25 @@ const cards = [
 
 const Awards = () => {
   return (
-    <section className="container mt-12 md:mt-16">
-      <div className="grid gap-5 md:grid-cols-3">
+    <section className="container mt-8 md:mt-12 overflow-hidden">
+      <div className="flex gap-4 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-4 px-1">
         {cards.map((c) => (
           <article
             key={c.title}
-            className="group relative overflow-hidden rounded-[1.5rem] border border-accent/40 bg-card p-6 shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-wine/20 md:p-7"
+            className="snap-center shrink-0 w-[260px] md:w-[300px] relative overflow-hidden rounded-[1.25rem] border border-border/50 bg-card p-5 shadow-sm transition-all duration-300 hover:shadow-md"
           >
-            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/10 transition-transform duration-500 group-hover:scale-[2]" />
-            <div className="absolute inset-x-0 bottom-0 h-1.5 bg-gradient-gold opacity-80" />
-            
-            <div className="relative flex flex-col gap-4 md:gap-5">
-              <div className="flex items-center justify-between">
-                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-gold shadow-gold ring-1 ring-white/20">
-                  <c.icon className="h-7 w-7 text-primary" />
-                </div>
-                <div className="text-[10px] uppercase tracking-[0.25em] text-accent font-bold px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
+            <div className="flex items-start gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary/10 ring-1 ring-primary/20">
+                <c.icon className="h-5 w-5 text-primary" />
+              </div>
+              <div className="flex-1 pt-0.5">
+                <div className="text-[9px] uppercase tracking-[0.2em] text-accent font-bold mb-1">
                   {c.sub}
                 </div>
-              </div>
-              
-              <div className="flex-1 mt-1">
-                <h3 className="font-display text-xl font-bold text-primary md:text-2xl leading-tight group-hover:text-accent transition-colors">{c.title}</h3>
-                <p className="mt-2.5 text-sm leading-relaxed text-muted-foreground font-medium">{c.desc}</p>
+                <h3 className="font-display text-sm font-bold text-foreground leading-snug">{c.title}</h3>
               </div>
             </div>
+            <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">{c.desc}</p>
           </article>
         ))}
       </div>
