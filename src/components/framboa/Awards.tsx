@@ -3,21 +3,21 @@ import { Award, Trophy, Store } from "lucide-react";
 const cards = [
   {
     icon: Trophy,
-    title: "Campeão Nacional 2024",
-    sub: "Abrasel — Brasil",
-    desc: "Campeão Nacional 2024 e Melhor Restaurante a Quilo da Paraíba pela Abrasel.",
+    title: "Melhor restaurante a quilo do Brasil",
+    sub: "Eleito em 2024",
+    desc: "Reconhecimento nacional pelo padrão de qualidade e sabor inconfundível.",
   },
   {
     icon: Award,
-    title: "Melhor Restaurante a Quilo 2025",
-    sub: "Abrasel — Paraíba",
-    desc: "Eleito Melhor Restaurante a Quilo da Paraíba 2025 pela Abrasel.",
+    title: "Melhor restaurante da Paraíba",
+    sub: "2024 e 2025",
+    desc: "Bicampeão consecutivo na preferência do público paraibano.",
   },
   {
     icon: Store,
-    title: "Manaíra Shopping",
-    sub: "Entrega & Retirada",
-    desc: "Faça seu pedido com entrega rápida ou retire no nosso ponto no Manaíra Shopping.",
+    title: "Entrega ou retirada no Manaíra Shopping",
+    sub: "Unidade Exclusiva",
+    desc: "Comodidade para receber em casa ou retirar rapidamente na nossa loja.",
   },
 ];
 

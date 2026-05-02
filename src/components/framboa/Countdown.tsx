@@ -39,39 +39,40 @@ const Countdown = () => {
   ];
 
   return (
-    <section className="container mt-16">
-      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-primary p-8 text-primary-foreground shadow-wine md:p-12">
+    <section className="container mt-12 md:mt-16">
+      <div className="relative overflow-hidden rounded-[2rem] bg-gradient-primary p-8 text-primary-foreground shadow-wine md:p-14 text-center flex flex-col items-center">
         <div className="absolute -right-16 -top-16 h-56 w-56 rounded-full bg-accent/20 blur-3xl" />
         <div className="absolute -bottom-20 -left-10 h-64 w-64 rounded-full bg-accent/10 blur-3xl" />
 
-        <div className="relative flex flex-col items-center gap-8 text-center md:flex-row md:justify-between md:text-left">
-          <div className="max-w-md">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-background/10 px-3 py-1 text-xs uppercase tracking-[0.25em] text-accent">
-              <Heart className="h-3 w-3 fill-accent text-accent" /> Campanha especial
-            </div>
-            <h2 className="font-display text-4xl font-bold leading-tight md:text-5xl">
-              Dia das Mães no <span className="text-gradient-gold">Framboá</span>
-            </h2>
-            <p className="mt-3 text-primary-foreground/80">
-              Reserve sua mesa e celebre quem nos ensinou o verdadeiro sabor de casa.
-            </p>
+        <div className="relative z-10 max-w-2xl flex flex-col items-center">
+          <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-background/10 px-4 py-1.5 text-xs uppercase tracking-[0.25em] text-accent backdrop-blur-sm border border-accent/20">
+            <Heart className="h-3.5 w-3.5 fill-accent text-accent" /> 
+            <span>Especial</span>
           </div>
+          
+          <h2 className="font-display text-4xl font-bold leading-tight md:text-6xl text-gradient-gold">
+            Dia das Mães
+          </h2>
+          
+          <p className="mt-4 text-base md:text-lg text-primary-foreground/85 max-w-lg">
+            Um momento inesquecível merece um sabor à altura. O contador já começou para o domingo mais especial do ano!
+          </p>
+        </div>
 
-          <div className="grid grid-cols-4 gap-3 md:gap-4">
-            {items.map((it) => (
-              <div
-                key={it.label}
-                className="min-w-[68px] rounded-2xl border border-accent/30 bg-background/10 px-3 py-4 backdrop-blur-md md:min-w-[88px]"
-              >
-                <div className="font-display text-3xl font-bold tabular-nums text-accent md:text-5xl">
-                  {String(it.value).padStart(2, "0")}
-                </div>
-                <div className="mt-1 text-[10px] uppercase tracking-[0.25em] text-primary-foreground/70 md:text-xs">
-                  {it.label}
-                </div>
+        <div className="relative z-10 mt-10 grid grid-cols-4 gap-3 md:gap-6">
+          {items.map((it) => (
+            <div
+              key={it.label}
+              className="min-w-[72px] rounded-2xl border border-accent/30 bg-background/10 px-3 py-4 md:px-5 md:py-6 backdrop-blur-md md:min-w-[100px] shadow-sm transition-transform hover:scale-105"
+            >
+              <div className="font-display text-3xl font-bold tabular-nums text-accent md:text-5xl">
+                {String(it.value).padStart(2, "0")}
               </div>
-            ))}
-          </div>
+              <div className="mt-2 text-[10px] uppercase tracking-[0.3em] text-primary-foreground/70 md:text-xs">
+                {it.label}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

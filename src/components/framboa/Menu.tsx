@@ -69,8 +69,8 @@ const monteSeu: Product[] = [
 ];
 
 const tabs = [
-  { id: "combos", label: "Combos" },
-  { id: "monte", label: "Monte seu combo" },
+  { id: "combos", label: "CARDÁPIO ESPECIAL" },
+  { id: "monte", label: "MONTE SEU CARDÁPIO" },
 ] as const;
 
 const ProductCard = ({ p }: { p: Product }) => {
@@ -112,7 +112,7 @@ const Menu = () => {
   const list = active === "combos" ? combos : monteSeu;
 
   return (
-    <section id="cardapio" className="mt-1">
+    <section id="cardapio" className="mt-4 pb-8">
       <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/50 px-4 py-2.5 shadow-sm">
         <div className="container px-0 mx-auto max-w-3xl overflow-x-auto no-scrollbar">
           <div className="flex gap-3 min-w-max pb-1">
@@ -133,7 +133,16 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="container px-0 mx-auto max-w-3xl mt-2 bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
+      <div className="container px-4 md:px-0 mx-auto max-w-3xl mt-8 mb-6">
+        <h2 className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-accent">
+          Seleção Exclusiva
+        </h2>
+        <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mt-1">
+          CARDÁPIOS Especiais
+        </h3>
+      </div>
+
+      <div className="container px-0 mx-auto max-w-3xl bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
         <div className="flex flex-col">
           {list.map((p) => (
             <ProductCard key={p.id} p={p} />
