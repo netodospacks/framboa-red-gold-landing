@@ -6,6 +6,7 @@ import Menu from "@/components/framboa/Menu";
 import Footer from "@/components/framboa/Footer";
 import WhatsAppButton from "@/components/framboa/WhatsAppButton";
 import FloatingCart from "@/components/framboa/FloatingCart";
+import CartDrawer from "@/components/framboa/CartDrawer";
 
 const Index = () => {
   return (
@@ -20,6 +21,7 @@ const Index = () => {
       <Footer />
       <WhatsAppButton />
       <FloatingCart />
+      <CartDrawer />
     </div>
   );
 };

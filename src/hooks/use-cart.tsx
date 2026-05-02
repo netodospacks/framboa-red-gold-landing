@@ -1,30 +1,104 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { Product, ProductOption } from "@/config/data";
+
+export type CartItem = {
+  cartItemId: string;
+  product: Product;
+  quantity: number;
+  entrada?: ProductOption;
+  sobremesa?: ProductOption;
+};
 
 type CartContextType = {
+  items: CartItem[];
   itemsCount: number;
   total: number;
-  addToCart: (price: number) => void;
+  addToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption) => void;
+  removeFromCart: (cartItemId: string) => void;
+  updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
+  isCartOpen: boolean;
+  setIsCartOpen: (isOpen: boolean) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  const [itemsCount, setItemsCount] = useState(0);
-  const [total, setTotal] = useState(0);
+  const [items, setItems] = useState<CartItem[]>(() => {
+    // Carregar do localStorage na inicialização
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("@framboa:cart");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch (e) {
+          console.error("Failed to parse cart", e);
+        }
+      }
+    }
+    return [];
+  });
+  
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const addToCart = (price: number) => {
-    setItemsCount((prev) => prev + 1);
-    setTotal((prev) => prev + price);
+  // Salvar no localStorage sempre que os itens mudarem
+  useEffect(() => {
+    localStorage.setItem("@framboa:cart", JSON.stringify(items));
+  }, [items]);
+
+  const itemsCount = items.reduce((acc, item) => acc + item.quantity, 0);
+  const total = items.reduce((acc, item) => acc + item.product.priceValue * item.quantity, 0);
+
+  const addToCart = (product: Product, entrada?: ProductOption, sobremesa?: ProductOption) => {
+    const cartItemId = `${product.id}-${entrada?.id || "none"}-${sobremesa?.id || "none"}`;
+
+    setItems((prev) => {
+      const existing = prev.find((i) => i.cartItemId === cartItemId);
+      if (existing) {
+        return prev.map((i) =>
+          i.cartItemId === cartItemId
+            ? { ...i, quantity: i.quantity + 1 }
+            : i
+        );
+      }
+      return [...prev, { cartItemId, product, quantity: 1, entrada, sobremesa }];
+    });
+  };
+
+  const removeFromCart = (cartItemId: string) => {
+    setItems((prev) => prev.filter((i) => i.cartItemId !== cartItemId));
+  };
+
+  const updateQuantity = (cartItemId: string, quantity: number) => {
+    if (quantity <= 0) {
+      removeFromCart(cartItemId);
+      return;
+    }
+    setItems((prev) =>
+      prev.map((i) =>
+        i.cartItemId === cartItemId ? { ...i, quantity } : i
+      )
+    );
   };
 
   const clearCart = () => {
-    setItemsCount(0);
-    setTotal(0);
+    setItems([]);
   };
 
   return (
-    <CartContext.Provider value={{ itemsCount, total, addToCart, clearCart }}>
+    <CartContext.Provider
+      value={{
+        items,
+        itemsCount,
+        total,
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+        isCartOpen,
+        setIsCartOpen,
+      }}
+    >
       {children}
     </CartContext.Provider>
   );
