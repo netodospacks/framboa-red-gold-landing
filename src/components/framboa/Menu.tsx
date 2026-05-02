@@ -4,7 +4,7 @@ import { useCart } from "@/hooks/use-cart";
 import { menuData, menuTabs, Product } from "@/config/data";
 import ProductModal from "./ProductModal";
 
-const ProductCard = ({ p, onOpenModal, active }: { p: Product; onOpenModal: (p: Product) => void; active: string }) => {
+const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product; onOpenModal: (p: Product) => void; active: string; hasCombo: boolean }) => {
   return (
     <article className="group flex gap-4 p-5 md:p-6 border-b border-border/40 bg-card hover:bg-secondary/10 transition-all duration-300 last:border-b-0 cursor-pointer" onClick={() => onOpenModal(p)}>
       <div className="flex flex-1 flex-col">
@@ -23,11 +23,16 @@ const ProductCard = ({ p, onOpenModal, active }: { p: Product; onOpenModal: (p: 
             {p.price}
           </span>
           <button 
-            className="flex items-center gap-1.5 rounded-full bg-primary/5 border border-primary/20 px-5 py-2 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-wine hover:border-transparent active:scale-95"
+            disabled={active === "combos" && hasCombo}
+            className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 active:scale-95 ${
+              active === "combos" && hasCombo
+                ? "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
+                : "bg-primary/5 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-wine hover:border-transparent"
+            }`}
             aria-label={`Ver ${p.name}`}
           >
             <Plus className="h-4 w-4" />
-            Adicionar
+            {active === "combos" && hasCombo ? "Já escolhido" : "Adicionar"}
           </button>
         </div>
       </div>
@@ -50,7 +55,7 @@ const ProductCard = ({ p, onOpenModal, active }: { p: Product; onOpenModal: (p: 
 const Menu = () => {
   const [active, setActive] = useState<(typeof menuTabs)[number]["id"]>("combos");
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const { addToCart } = useCart();
+  const { addToCart, hasCombo } = useCart();
   
   const list = active === "combos" ? menuData.combos : menuData.monteSeu;
 
@@ -117,7 +122,7 @@ const Menu = () => {
 
         <div className="flex flex-col">
           {list.map((p) => (
-            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={active} />
+            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={active} hasCombo={hasCombo} />
           ))}
         </div>
       </div>

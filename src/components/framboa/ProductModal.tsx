@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { X, Check, Info, Users } from "lucide-react";
 import { Product, ProductOption, ProductSizeOption } from "@/config/data";
+import { useCart } from "@/hooks/use-cart";
 
 interface ProductModalProps {
   product: Product | null;
@@ -13,6 +14,7 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
   const [selectedEntrada, setSelectedEntrada] = useState<ProductOption | undefined>();
   const [selectedSobremesa, setSelectedSobremesa] = useState<ProductOption | undefined>();
   const [selectedTamanho, setSelectedTamanho] = useState<ProductSizeOption | undefined>();
+  const { hasCombo } = useCart();
 
   // Reset states when product changes
   useEffect(() => {
@@ -31,7 +33,11 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
 
   if (!isOpen || !product) return null;
 
+  const isCombo = !!product.serves;
+  const blockDueToExistingCombo = isCombo && hasCombo;
+
   const canAdd =
+    !blockDueToExistingCombo &&
     (product.requiredStarters ? selectedEntrada !== undefined : true) &&
     (product.requiredDesserts ? selectedSobremesa !== undefined : true) &&
     (product.requiredSizes ? selectedTamanho !== undefined : true);
@@ -220,7 +226,9 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
                 : "bg-muted text-muted-foreground cursor-not-allowed opacity-70"
             }`}
           >
-            <span className="text-lg">Adicionar ao pedido</span>
+            <span className="text-lg">
+              {blockDueToExistingCombo ? "Limite de 1 cardápio atingido" : "Adicionar ao pedido"}
+            </span>
             <span className="text-xl">{displayPrice}</span>
           </button>
         </div>

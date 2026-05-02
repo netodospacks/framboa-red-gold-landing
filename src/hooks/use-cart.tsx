@@ -15,6 +15,7 @@ type CartContextType = {
   items: CartItem[];
   itemsCount: number;
   total: number;
+  hasCombo: boolean;
   addToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption, tamanho?: ProductSizeOption) => void;
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
@@ -54,12 +55,26 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
     return acc + itemPrice * item.quantity;
   }, 0);
 
+  const hasCombo = items.some((item) => !!item.product.serves);
+
   const addToCart = (product: Product, entrada?: ProductOption, sobremesa?: ProductOption, tamanho?: ProductSizeOption) => {
     const cartItemId = `${product.id}-${entrada?.id || "none"}-${sobremesa?.id || "none"}-${tamanho?.id || "none"}`;
 
     setItems((prev) => {
       const existing = prev.find((i) => i.cartItemId === cartItemId);
       
+      // Regra: Apenas 1 combo por pedido
+      const isNewCombo = !!product.serves;
+      const alreadyHasCombo = prev.some((i) => !!i.product.serves);
+
+      if (isNewCombo && alreadyHasCombo) {
+        toast.error("Você só pode escolher 1 cardápio por pedido", {
+          description: "Remova o cardápio atual para escolher outro.",
+          duration: 4000,
+        });
+        return prev;
+      }
+
       // Limite de 2 unidades para itens avulsos (com requiredSizes)
       if (product.requiredSizes && ((existing?.quantity || 0) >= 2)) {
         toast.error("Limite de 2 unidades por item atingido", {
@@ -116,6 +131,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         items,
         itemsCount,
         total,
+        hasCombo,
         addToCart,
         removeFromCart,
         updateQuantity,
