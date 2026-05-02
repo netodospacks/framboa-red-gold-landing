@@ -1,6 +1,7 @@
-import { X, Minus, Plus, Trash2, ShoppingBag } from "lucide-react";
+import { X, Minus, Plus, Trash2, ShoppingBag, Truck, Store, MapPin, User, Phone as PhoneIcon } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const CartDrawer = () => {
   const {
@@ -12,6 +13,14 @@ const CartDrawer = () => {
     removeFromCart,
     clearCart,
   } = useCart();
+
+  const [clientName, setClientName] = useState("");
+  const [clientPhone, setClientPhone] = useState("");
+  const [orderType, setOrderType] = useState<"retirada" | "entrega">("retirada");
+  const [address, setAddress] = useState("");
+
+  const deliveryFee = orderType === "entrega" ? 30 : 0;
+  const finalTotal = total + deliveryFee;
 
   // Prevent background scrolling when cart is open
   useEffect(() => {
@@ -34,35 +43,59 @@ const CartDrawer = () => {
 
   const handleCheckout = () => {
     if (items.length === 0) return;
+    
+    if (!clientName.trim() || !clientPhone.trim()) {
+      toast.error("Por favor, preencha seu nome e telefone");
+      return;
+    }
 
-    let message = "Olá! Gostaria de finalizar meu pedido:\n\n";
+    if (orderType === "entrega" && !address.trim()) {
+      toast.error("Por favor, informe o endereço de entrega");
+      return;
+    }
+
+    let message = `*NOVO PEDIDO - FRAMBOÁ*\n\n`;
+    message += `👤 *Cliente:* ${clientName}\n`;
+    message += `📱 *Telefone:* ${clientPhone}\n`;
+    message += `📍 *Tipo:* ${orderType === "entrega" ? "Entrega" : "Retirada"}\n`;
+    
+    if (orderType === "entrega") {
+      message += `🏠 *Endereço:* ${address}\n`;
+    }
+
+    message += `\n🍽️ *Pedido:*\n`;
     items.forEach((item) => {
       const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
-      message += `${item.quantity}x ${item.product.name} - R$ ${(
-        itemPrice * item.quantity
-      ).toFixed(2)}\n`;
+      message += `• ${item.quantity}x ${item.product.name}\n`;
       
       if (item.tamanho) {
-        message += `   • Tamanho: ${item.tamanho.name}\n`;
+        message += `  Tamanho: ${item.tamanho.name}\n`;
       }
       if (item.entrada) {
-        message += `   • Entrada: ${item.entrada.name}\n`;
+        message += `  Entrada: ${item.entrada.name}\n`;
       }
       if (item.sobremesa) {
-        message += `   • Sobremesa: ${item.sobremesa.name}\n`;
+        message += `  Sobremesa: ${item.sobremesa.name}\n`;
       }
+      message += `  Subtotal: R$ ${(itemPrice * item.quantity).toFixed(2)}\n`;
     });
-    message += `\n*Total: ${formattedTotal}*\n\n`;
-    message += "Endereço de entrega: ";
 
-    const whatsappNumber = "5583999999999"; // TODO: Mudar para o número real do restaurante
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
-      message
-    )}`;
+    message += `\n💰 *Valores:*\n`;
+    message += `Subtotal: R$ ${total.toFixed(2)}\n`;
+    if (orderType === "entrega") {
+      message += `Taxa de Entrega: R$ 30,00\n`;
+    }
+    message += `*Total Final: R$ ${finalTotal.toFixed(2)}*\n\n`;
+
+    message += `📌 "Estou ciente da caução das travessas, que será reembolsada caso devolvidas em até 2 semanas."`;
+
+    const whatsappNumber = "5583982309183";
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     
     window.open(url, "_blank");
     clearCart();
     setIsCartOpen(false);
+    toast.success("Pedido enviado com sucesso!");
   };
 
   return (
@@ -180,22 +213,99 @@ const CartDrawer = () => {
           )}
         </div>
 
+        {/* Formulário de Dados */}
+        {items.length > 0 && (
+          <div className="border-t border-border/30 bg-muted/30 px-6 py-6 space-y-4">
+            <h3 className="font-display font-bold text-sm uppercase tracking-wider text-muted-foreground flex items-center gap-2">
+              <User className="h-4 w-4" /> Seus Dados
+            </h3>
+            
+            <div className="grid gap-3">
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="text"
+                  placeholder="Seu nome completo"
+                  value={clientName}
+                  onChange={(e) => setClientName(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                />
+              </div>
+              <div className="relative">
+                <PhoneIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <input
+                  type="tel"
+                  placeholder="Seu telefone (WhatsApp)"
+                  value={clientPhone}
+                  onChange={(e) => setClientPhone(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                />
+              </div>
+            </div>
+
+            <div className="flex gap-2 p-1 bg-background rounded-2xl border border-border/50">
+              <button
+                onClick={() => setOrderType("retirada")}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold transition-all ${
+                  orderType === "retirada" 
+                    ? "bg-primary text-primary-foreground shadow-sm" 
+                    : "text-muted-foreground hover:bg-secondary"
+                }`}
+              >
+                <Store className="h-4 w-4" /> Retirada
+              </button>
+              <button
+                onClick={() => setOrderType("entrega")}
+                className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-xl text-xs font-bold transition-all ${
+                  orderType === "entrega" 
+                    ? "bg-primary text-primary-foreground shadow-sm" 
+                    : "text-muted-foreground hover:bg-secondary"
+                }`}
+              >
+                <Truck className="h-4 w-4" /> Entrega
+              </button>
+            </div>
+
+            {orderType === "entrega" && (
+              <div className="relative animate-in slide-in-from-top-2">
+                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <textarea
+                  placeholder="Endereço completo para entrega"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none min-h-[80px] resize-none"
+                />
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Footer */}
         {items.length > 0 && (
           <div className="border-t border-border/50 bg-card px-6 py-6 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
-            <div className="mb-4 flex items-center justify-between">
-              <span className="text-lg font-medium text-muted-foreground">
-                Total
-              </span>
-              <span className="font-display text-2xl font-black text-foreground">
-                {formattedTotal}
-              </span>
+            <div className="space-y-2 mb-6">
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <span>Subtotal</span>
+                <span>R$ {total.toFixed(2)}</span>
+              </div>
+              {orderType === "entrega" && (
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Taxa de Entrega</span>
+                  <span>R$ 30,00</span>
+                </div>
+              )}
+              <div className="flex items-center justify-between pt-2 border-t border-border/30">
+                <span className="text-lg font-bold text-foreground">Total</span>
+                <span className="font-display text-2xl font-black text-primary">
+                  R$ {finalTotal.toFixed(2)}
+                </span>
+              </div>
             </div>
             <button
               onClick={handleCheckout}
               className="flex w-full items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 py-4 text-lg font-bold text-primary-foreground shadow-card shadow-wine transition-smooth hover:scale-[1.02] active:scale-[0.98]"
             >
-              Finalizar Pedido
+              Enviar Pedido via WhatsApp
             </button>
           </div>
         )}
