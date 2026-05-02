@@ -1,7 +1,7 @@
 const WhatsAppButton = () => {
   return (
     <a
-      href="https://wa.me/5500000000000?text=Ol%C3%A1%2C%20gostaria%20de%20fazer%20uma%20reserva%20no%20Frambo%C3%A1"
+      href="https://wa.me/5583982309183?text=Ol%C3%A1!%20Estou%20navegando%20no%20site%20e%20gostaria%20de%20tirar%20uma%20d%C3%BAvida%20sobre%20os%20card%C3%A1pios."
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Falar com o Framboá no WhatsApp"
