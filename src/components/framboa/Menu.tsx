@@ -96,15 +96,15 @@ const ProductCard = ({ p }: { p: Product }) => {
         )}
       </div>
 
-      <div className="flex flex-1 flex-col p-6">
-        <h3 className="font-display text-xl font-bold text-primary">{p.name}</h3>
+      <div className="flex flex-1 flex-col p-5 md:p-6">
+        <h3 className="font-display text-lg font-bold text-primary md:text-xl">{p.name}</h3>
         <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
 
-        <div className="mt-5 flex items-center justify-between">
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <span className={`text-xs font-medium ${low ? "text-primary" : "text-muted-foreground"}`}>
             {p.units} {p.units === 1 ? "unidade restante" : "unidades restantes"}
           </span>
-          <button className="inline-flex items-center gap-1 rounded-full bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-smooth hover:bg-primary/90 hover:gap-2">
+          <button className="inline-flex w-full items-center justify-center gap-1 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-smooth hover:bg-primary/90 hover:gap-2 sm:w-auto sm:py-2.5">
             Ver opções <ChevronRight className="h-4 w-4" />
           </button>
         </div>
