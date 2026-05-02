@@ -113,7 +113,7 @@ const Menu = () => {
 
   return (
     <section id="cardapio" className="mt-8 md:mt-12">
-      <div className="sticky top-20 z-30 bg-background/85 backdrop-blur-md border-b border-border/60 px-4 py-3 shadow-sm">
+      <div className="sticky top-16 z-30 bg-background/85 backdrop-blur-md border-b border-border/60 px-4 py-3 shadow-sm">
         <div className="container px-0 mx-auto max-w-3xl overflow-x-auto no-scrollbar">
           <div className="flex gap-3 min-w-max pb-1">
             {tabs.map((t) => (
