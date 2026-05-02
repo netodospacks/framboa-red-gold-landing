@@ -63,10 +63,12 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
 
         <div className="flex-1 overflow-y-auto pb-24">
           {/* Header Image */}
-          <div className="relative h-48 w-full md:h-56 shrink-0">
-            <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          </div>
+          {!product.requiredSizes && (
+            <div className="relative h-48 w-full md:h-56 shrink-0">
+              <img src={product.image} alt={product.name} className="h-full w-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+            </div>
+          )}
 
           {/* Info Section */}
           <div className="px-5 py-5">

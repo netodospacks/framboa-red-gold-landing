@@ -3,6 +3,16 @@ import comboFamilia from "@/assets/combo-familia.jpg";
 import comboEspecial from "@/assets/combo-especial.jpg";
 import comboTradicional from "@/assets/combo-tradicional.jpg";
 
+import iscaFile from "@/assets/isca_file_gorgonzola_1777757530486.png";
+import salpicaoImg from "@/assets/salpicao_1777757547699.png";
+import bacalhauImg from "@/assets/bacalhau_gratinado_1777757561560.png";
+import fileMadeiraImg from "@/assets/file_madeira_1777757575608.png";
+import camaraoQueijosImg from "@/assets/camarao_queijos_1777757592945.png";
+import arrozSalmaoImg from "@/assets/arroz_salmao_1777757609644.png";
+import pescadaImg from "@/assets/pescada_portuguesa_1777757621820.png";
+import frangoImg from "@/assets/frango_parmegiana_1777757633576.png";
+import farofaImg from "@/assets/farofa_amendoas_1777757645636.png";
+
 export type ProductOption = {
   id: string;
   name: string;
@@ -133,7 +143,7 @@ export const menuData = {
       price: "A partir de R$ 325,90",
       priceValue: 325.90,
       desc: "Deliciosas iscas de filé mignon ao molho gorgonzola.",
-      image: comboFamilia,
+      image: iscaFile,
       requiredSizes: [
         { id: "sz1", name: "1kg", price: "R$ 325,90", priceValue: 325.90 },
         { id: "sz2", name: "2kg", price: "R$ 600,00", priceValue: 600 },
@@ -145,7 +155,7 @@ export const menuData = {
       price: "A partir de R$ 125,90",
       priceValue: 125.90,
       desc: "Salpicão tradicional cremoso, perfeito para acompanhar.",
-      image: comboEspecial,
+      image: salpicaoImg,
       requiredSizes: [
         { id: "sz1", name: "1kg", price: "R$ 125,90", priceValue: 125.90 },
         { id: "sz2", name: "2kg", price: "R$ 200,00", priceValue: 200 },
@@ -157,7 +167,7 @@ export const menuData = {
       price: "R$ 650,00",
       priceValue: 650,
       desc: "Bacalhau nobre gratinado com batatas e creme especial.",
-      image: comboTradicional,
+      image: bacalhauImg,
       requiredSizes: [
         { id: "sz1", name: "Apenas 2kg", price: "R$ 650,00", priceValue: 650 },
       ]
@@ -168,7 +178,7 @@ export const menuData = {
       price: "R$ 650,00",
       priceValue: 650,
       desc: "Medalhões de filé mignon ao clássico molho madeira.",
-      image: comboFamilia,
+      image: fileMadeiraImg,
       requiredSizes: [
         { id: "sz1", name: "Apenas 2kg", price: "R$ 650,00", priceValue: 650 },
       ]
@@ -179,7 +189,7 @@ export const menuData = {
       price: "R$ 540,00",
       priceValue: 540,
       desc: "Camarões graúdos envoltos em um cremoso molho quatro queijos.",
-      image: comboEspecial,
+      image: camaraoQueijosImg,
       requiredSizes: [
         { id: "sz1", name: "Apenas 2kg", price: "R$ 540,00", priceValue: 540 },
       ]
@@ -190,7 +200,7 @@ export const menuData = {
       price: "A partir de R$ 300,00",
       priceValue: 300,
       desc: "Arroz soltinho cozido com lascas de salmão fresco e temperos finos.",
-      image: comboTradicional,
+      image: arrozSalmaoImg,
       requiredSizes: [
         { id: "sz1", name: "2kg", price: "R$ 300,00", priceValue: 300 },
         { id: "sz2", name: "3kg", price: "R$ 450,00", priceValue: 450 },
@@ -202,7 +212,7 @@ export const menuData = {
       price: "R$ 500,00",
       priceValue: 500,
       desc: "Pescada amarela ao estilo português, com batatas, cebola, pimentões e azeite.",
-      image: comboFamilia,
+      image: pescadaImg,
       requiredSizes: [
         { id: "sz1", name: "Apenas 2kg", price: "R$ 500,00", priceValue: 500 },
       ]
@@ -213,7 +223,7 @@ export const menuData = {
       price: "R$ 400,00",
       priceValue: 400,
       desc: "Filés de frango empanados, cobertos com muito queijo e molho de tomate artesanal.",
-      image: comboEspecial,
+      image: frangoImg,
       requiredSizes: [
         { id: "sz1", name: "Apenas 2kg", price: "R$ 400,00", priceValue: 400 },
       ]
@@ -224,7 +234,7 @@ export const menuData = {
       price: "A partir de R$ 100,00",
       priceValue: 100,
       desc: "Nossa famosa farofa cítrica com lascas de amêndoas tostadas.",
-      image: comboTradicional,
+      image: farofaImg,
       requiredSizes: [
         { id: "sz1", name: "450g", price: "R$ 100,00", priceValue: 100 },
         { id: "sz2", name: "900g", price: "R$ 200,00", priceValue: 200 },
@@ -235,7 +245,7 @@ export const menuData = {
 
 export const menuTabs = [
   { id: "combos", label: "CARDÁPIO ESPECIAL" },
-  { id: "monte", label: "VENDA DE AVULSOS" },
+  { id: "monte", label: "MONTE SEU CARDÁPIO" },
 ] as const;
 
 export type AwardCard = {

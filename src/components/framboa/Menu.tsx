@@ -4,7 +4,7 @@ import { useCart } from "@/hooks/use-cart";
 import { menuData, menuTabs, Product } from "@/config/data";
 import ProductModal from "./ProductModal";
 
-const ProductCard = ({ p, onOpenModal }: { p: Product; onOpenModal: (p: Product) => void }) => {
+const ProductCard = ({ p, onOpenModal, active }: { p: Product; onOpenModal: (p: Product) => void; active: string }) => {
   return (
     <article className="group flex gap-4 p-5 md:p-6 border-b border-border/40 bg-card hover:bg-secondary/10 transition-all duration-300 last:border-b-0 cursor-pointer" onClick={() => onOpenModal(p)}>
       <div className="flex flex-1 flex-col">
@@ -32,15 +32,17 @@ const ProductCard = ({ p, onOpenModal }: { p: Product; onOpenModal: (p: Product)
         </div>
       </div>
       
-      <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.25rem] md:h-36 md:w-36 shadow-md ring-1 ring-border/50">
-        <img
-          src={p.image}
-          alt={p.name}
-          loading="lazy"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </div>
+      {active !== "monte" && (
+        <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.25rem] md:h-36 md:w-36 shadow-md ring-1 ring-border/50">
+          <img
+            src={p.image}
+            alt={p.name}
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        </div>
+      )}
     </article>
   );
 };
@@ -79,14 +81,14 @@ const Menu = () => {
           Seleção Exclusiva
         </h2>
         <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mt-1">
-          CARDÁPIOS Especiais
+          {active === "combos" ? "CARDÁPIOS Especiais" : "MONTE SEU Cardápio"}
         </h3>
       </div>
 
       <div className="container px-0 mx-auto max-w-3xl bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
         <div className="flex flex-col">
           {list.map((p) => (
-            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} />
+            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={active} />
           ))}
         </div>
       </div>
