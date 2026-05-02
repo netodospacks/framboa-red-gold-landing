@@ -7,6 +7,7 @@ const CartDrawer = () => {
   const {
     items,
     total,
+    hasCombo,
     isCartOpen,
     setIsCartOpen,
     updateQuantity,
@@ -20,7 +21,8 @@ const CartDrawer = () => {
   const [address, setAddress] = useState("");
 
   const deliveryFee = orderType === "entrega" ? 30 : 0;
-  const finalTotal = total + deliveryFee;
+  const depositFee = hasCombo ? 110 : 0;
+  const finalTotal = total + deliveryFee + depositFee;
 
   // Prevent background scrolling when cart is open
   useEffect(() => {
@@ -82,6 +84,9 @@ const CartDrawer = () => {
 
     message += `\n💰 *Valores:*\n`;
     message += `Subtotal: R$ ${total.toFixed(2)}\n`;
+    if (depositFee > 0) {
+      message += `Caução (Reembolsável): R$ ${depositFee.toFixed(2)}\n`;
+    }
     if (orderType === "entrega") {
       message += `Taxa de Entrega: R$ 30,00\n`;
     }
@@ -285,9 +290,20 @@ const CartDrawer = () => {
           <div className="border-t border-border/50 bg-card px-6 py-6 shadow-[0_-10px_40px_rgba(0,0,0,0.05)]">
             <div className="space-y-2 mb-6">
               <div className="flex items-center justify-between text-sm text-muted-foreground">
-                <span>Subtotal</span>
+                <span>Subtotal dos itens</span>
                 <span>R$ {total.toFixed(2)}</span>
               </div>
+              {depositFee > 0 && (
+                <div className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between text-sm text-primary font-bold">
+                    <span>Caução (reembolsável)</span>
+                    <span>R$ {depositFee.toFixed(2)}</span>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground italic leading-tight">
+                    Este valor será devolvido após a devolução das travessas
+                  </span>
+                </div>
+              )}
               {orderType === "entrega" && (
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
                   <span>Taxa de Entrega</span>
@@ -295,7 +311,7 @@ const CartDrawer = () => {
                 </div>
               )}
               <div className="flex items-center justify-between pt-2 border-t border-border/30">
-                <span className="text-lg font-bold text-foreground">Total</span>
+                <span className="text-lg font-bold text-foreground">Total Final</span>
                 <span className="font-display text-2xl font-black text-primary">
                   R$ {finalTotal.toFixed(2)}
                 </span>
