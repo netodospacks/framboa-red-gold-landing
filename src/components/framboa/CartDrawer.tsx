@@ -1,5 +1,6 @@
 import { X, Minus, Plus, Trash2, ShoppingBag, Truck, Store, MapPin, User, Phone as PhoneIcon } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
+import { bairrosJP } from "@/config/data";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -18,7 +19,10 @@ const CartDrawer = () => {
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");
   const [orderType, setOrderType] = useState<"retirada" | "entrega">("retirada");
-  const [address, setAddress] = useState("");
+  const [bairro, setBairro] = useState("");
+  const [rua, setRua] = useState("");
+  const [numero, setNumero] = useState("");
+  const [complemento, setComplemento] = useState("");
 
   const deliveryFee = orderType === "entrega" ? 30 : 0;
   const depositFee = hasCombo ? 110 : 0;
@@ -51,9 +55,15 @@ const CartDrawer = () => {
       return;
     }
 
-    if (orderType === "entrega" && !address.trim()) {
-      toast.error("Por favor, informe o endereço de entrega");
-      return;
+    if (orderType === "entrega") {
+      if (!bairro) {
+        toast.error("Por favor, selecione seu bairro");
+        return;
+      }
+      if (!rua.trim() || !numero.trim()) {
+        toast.error("Por favor, preencha rua e número");
+        return;
+      }
     }
 
     const separator = "----------------------------------------";
@@ -64,12 +74,18 @@ const CartDrawer = () => {
     message += `Nome: ${clientName}\n`;
     message += `Telefone: ${clientPhone}\n\n`;
     
-    message += `TIPO DE PEDIDO:\n`;
-    message += `${orderType === "entrega" ? "Entrega" : "Retirada"}\n`;
     if (orderType === "entrega") {
-      message += `Endereço: ${address}\n`;
+      message += `TIPO DE PEDIDO:\n`;
+      message += `Entrega\n`;
+      message += `Endereço: ${rua}, nº ${numero}\n`;
+      if (complemento.trim()) {
+        message += `Complemento: ${complemento}\n`;
+      }
+      message += `Bairro: ${bairro}\n\n`;
+    } else {
+      message += `TIPO DE PEDIDO:\n`;
+      message += `Retirada\n\n`;
     }
-    message += `\n`;
 
     message += `${separator}\n\n`;
     message += `PEDIDO:\n\n`;
@@ -288,14 +304,48 @@ const CartDrawer = () => {
             </div>
 
             {orderType === "entrega" && (
-              <div className="relative animate-in slide-in-from-top-2">
-                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <textarea
-                  placeholder="Endereço completo para entrega"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none min-h-[80px] resize-none"
-                />
+              <div className="grid gap-3 animate-in slide-in-from-top-2">
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <select
+                    value={bairro}
+                    onChange={(e) => setBairro(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none"
+                  >
+                    <option value="" disabled>Selecione seu bairro</option>
+                    {bairrosJP.map((b) => (
+                      <option key={b} value={b}>{b}</option>
+                    ))}
+                  </select>
+                </div>
+                
+                <div className="relative">
+                  <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <input
+                    type="text"
+                    placeholder="Rua / Avenida"
+                    value={rua}
+                    onChange={(e) => setRua(e.target.value)}
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <input
+                    type="text"
+                    placeholder="Número"
+                    value={numero}
+                    onChange={(e) => setNumero(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Comp. (opcional)"
+                    value={complemento}
+                    onChange={(e) => setComplemento(e.target.value)}
+                    className="w-full px-4 py-2.5 rounded-xl border border-border/50 bg-background text-sm focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                  />
+                </div>
               </div>
             )}
           </div>
