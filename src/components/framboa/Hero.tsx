@@ -30,7 +30,7 @@ const Hero = () => {
 
         {/* Textos Centralizados Abaixo */}
         <div className="mt-10 flex flex-col items-center gap-3">
-          <h1 className="font-display text-3xl md:text-5xl font-bold text-foreground tracking-tight">
+          <h1 className="font-display text-3xl md:text-5xl font-bold text-primary tracking-tight drop-shadow-sm">
             RESTAURANTE FRAMBOÁ
           </h1>
           

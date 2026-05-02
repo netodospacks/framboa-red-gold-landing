@@ -77,16 +77,18 @@ const ProductCard = ({ p }: { p: Product }) => {
   const { addToCart } = useCart();
   
   return (
-    <article className="flex gap-4 p-5 md:p-6 border-b border-border/40 bg-card hover:bg-secondary/20 transition-colors last:border-b-0">
+    <article className="group flex gap-4 p-5 md:p-6 border-b border-border/40 bg-card hover:bg-secondary/10 transition-all duration-300 last:border-b-0">
       <div className="flex flex-1 flex-col">
-        <h3 className="font-display font-bold text-foreground text-lg md:text-xl leading-tight text-primary-foreground/90">{p.name}</h3>
-        <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2 leading-snug md:line-clamp-3">{p.desc}</p>
+        <h3 className="font-display font-bold text-foreground text-lg md:text-xl leading-tight transition-colors group-hover:text-primary">{p.name}</h3>
+        <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2 leading-relaxed md:line-clamp-3">{p.desc}</p>
         
         <div className="mt-auto pt-4 flex items-center justify-between">
-          <span className="font-bold text-primary text-lg md:text-xl drop-shadow-sm">{p.price}</span>
+          <span className="font-display font-black text-primary text-2xl md:text-3xl tracking-tight drop-shadow-sm">
+            {p.price}
+          </span>
           <button 
             onClick={() => addToCart(p.priceValue)}
-            className="flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary transition-smooth hover:bg-primary hover:text-primary-foreground hover:shadow-wine active:scale-95"
+            className="flex items-center gap-1.5 rounded-full bg-primary/5 border border-primary/20 px-5 py-2 text-sm font-bold text-primary transition-all duration-300 hover:bg-primary hover:text-primary-foreground hover:shadow-wine hover:border-transparent active:scale-95"
             aria-label={`Adicionar ${p.name}`}
           >
             <Plus className="h-4 w-4" />
@@ -95,13 +97,14 @@ const ProductCard = ({ p }: { p: Product }) => {
         </div>
       </div>
       
-      <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl md:h-32 md:w-32 shadow-soft ring-1 ring-border/50">
+      <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.25rem] md:h-36 md:w-36 shadow-md ring-1 ring-border/50">
         <img
           src={p.image}
           alt={p.name}
           loading="lazy"
-          className="h-full w-full object-cover transition-smooth hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     </article>
   );
