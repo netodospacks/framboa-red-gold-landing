@@ -112,8 +112,8 @@ const Menu = () => {
   const list = active === "combos" ? combos : monteSeu;
 
   return (
-    <section id="cardapio" className="mt-8 md:mt-12">
-      <div className="sticky top-16 z-30 bg-background/85 backdrop-blur-md border-b border-border/60 px-4 py-3 shadow-sm">
+    <section id="cardapio" className="mt-1">
+      <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/50 px-4 py-2.5 shadow-sm">
         <div className="container px-0 mx-auto max-w-3xl overflow-x-auto no-scrollbar">
           <div className="flex gap-3 min-w-max pb-1">
             {tabs.map((t) => (
@@ -133,7 +133,7 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="container px-0 mx-auto max-w-3xl mt-4 md:mt-6 bg-card rounded-2xl shadow-soft border border-border/50 overflow-hidden">
+      <div className="container px-0 mx-auto max-w-3xl mt-2 bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
         <div className="flex flex-col">
           {list.map((p) => (
             <ProductCard key={p.id} p={p} />
