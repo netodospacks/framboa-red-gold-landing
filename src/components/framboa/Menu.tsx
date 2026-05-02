@@ -11,6 +11,12 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product; onOpenM
         <h3 className="font-display font-bold text-foreground text-lg md:text-xl leading-tight transition-colors group-hover:text-primary">{p.name}</h3>
         <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2 leading-relaxed md:line-clamp-3">{p.desc}</p>
         
+        {p.includedItems && (
+          <p className="mt-2 text-[13px] text-muted-foreground/70 line-clamp-2 leading-snug italic">
+            Inclui: {p.includedItems.map(item => item.split(' (')[0]).join(', ')}
+          </p>
+        )}
+        
         {p.serves && (
           <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
             <Users className="h-4 w-4" />
