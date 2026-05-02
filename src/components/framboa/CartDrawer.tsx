@@ -56,19 +56,29 @@ const CartDrawer = () => {
       return;
     }
 
-    let message = `*NOVO PEDIDO - FRAMBOÁ*\n\n`;
-    message += `👤 *Cliente:* ${clientName}\n`;
-    message += `📱 *Telefone:* ${clientPhone}\n`;
-    message += `📍 *Tipo:* ${orderType === "entrega" ? "Entrega" : "Retirada"}\n`;
+    const separator = "----------------------------------------";
+    let message = `${separator}\n\n`;
+    message += `NOVO PEDIDO - RESTAURANTE FRAMBOÁ\n\n`;
+    
+    message += `Cliente:\n`;
+    message += `Nome: ${clientName}\n`;
+    message += `Telefone: ${clientPhone}\n\n`;
+    
+    message += `Tipo:\n`;
+    message += `${orderType === "entrega" ? "Entrega" : "Retirada"}\n\n`;
     
     if (orderType === "entrega") {
-      message += `🏠 *Endereço:* ${address}\n`;
+      message += `Endereço:\n`;
+      message += `${address}\n\n`;
     }
 
-    message += `\n🍽️ *Pedido:*\n`;
+    message += `${separator}\n\n`;
+    message += `Pedido:\n\n`;
+    
     items.forEach((item) => {
       const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
-      message += `• ${item.quantity}x ${item.product.name}\n`;
+      message += `- ${item.product.name}\n`;
+      message += `  Quantidade: ${item.quantity}\n`;
       
       if (item.tamanho) {
         message += `  Tamanho: ${item.tamanho.name}\n`;
@@ -79,20 +89,27 @@ const CartDrawer = () => {
       if (item.sobremesa) {
         message += `  Sobremesa: ${item.sobremesa.name}\n`;
       }
-      message += `  Subtotal: R$ ${(itemPrice * item.quantity).toFixed(2)}\n`;
+      message += `  Subtotal: R$ ${(itemPrice * item.quantity).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n\n`;
     });
 
-    message += `\n💰 *Valores:*\n`;
-    message += `Subtotal: R$ ${total.toFixed(2)}\n`;
+    message += `${separator}\n\n`;
+    message += `Valores:\n\n`;
+    message += `Subtotal: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+    
     if (depositFee > 0) {
-      message += `Caução (Reembolsável): R$ ${depositFee.toFixed(2)}\n`;
+      message += `Caução: R$ ${depositFee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
     }
+    
     if (orderType === "entrega") {
-      message += `Taxa de Entrega: R$ 30,00\n`;
+      message += `Taxa de entrega: R$ 30,00\n`;
     }
-    message += `*Total Final: R$ ${finalTotal.toFixed(2)}*\n\n`;
+    
+    message += `\nTotal: R$ ${finalTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n\n`;
 
-    message += `📌 "Estou ciente da caução das travessas, que será reembolsada caso devolvidas em até 2 semanas."`;
+    message += `${separator}\n\n`;
+    message += `Observação:\n`;
+    message += `Estou ciente da política de caução das travessas.\n\n`;
+    message += `${separator}`;
 
     const whatsappNumber = "5583982309183";
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
