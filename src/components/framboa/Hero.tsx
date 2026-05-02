@@ -1,4 +1,4 @@
-import heroImage from "@/assets/framboa-hero-v2.png";
+import heroImage from "@/assets/hero-family.jpg";
 import logo from "@/assets/framboa-logo.png";
 
 const Hero = () => {
@@ -8,14 +8,14 @@ const Hero = () => {
       <div className="relative mx-auto w-full max-w-6xl px-4 md:px-6 mt-2">
         
         {/* Container da Imagem (com overflow hidden para cortar o zoom) */}
-        <div className="relative h-[240px] md:h-[360px] w-full rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-card">
+        <div className="relative h-[280px] md:h-[420px] w-full rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-card">
           <img
             src={heroImage}
             alt="Capa Framboá"
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           {/* Sombra para integrar suavemente com o fundo e dar contraste no topo */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/20 pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/10 pointer-events-none" />
         </div>
         
         {/* Logo (colocada em relação ao container principal, vazando a imagem tranquilamente) */}
