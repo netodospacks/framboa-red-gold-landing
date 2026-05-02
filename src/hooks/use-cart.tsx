@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { Product, ProductOption, ProductSizeOption } from "@/config/data";
+import { toast } from "sonner";
 
 export type CartItem = {
   cartItemId: string;
@@ -58,13 +59,25 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
     setItems((prev) => {
       const existing = prev.find((i) => i.cartItemId === cartItemId);
+      
+      // Limite de 2 unidades para itens avulsos (com requiredSizes)
+      if (product.requiredSizes && ((existing?.quantity || 0) >= 2)) {
+        toast.error("Limite de 2 unidades por item atingido", {
+          description: "Para este item, o limite máximo é de 2 unidades por pedido.",
+          duration: 3000,
+        });
+        return prev;
+      }
+
       if (existing) {
+        toast.success(`Mais um ${product.name} adicionado!`);
         return prev.map((i) =>
           i.cartItemId === cartItemId
             ? { ...i, quantity: i.quantity + 1 }
             : i
         );
       }
+      toast.success(`${product.name} adicionado ao carrinho!`);
       return [...prev, { cartItemId, product, quantity: 1, entrada, sobremesa, tamanho }];
     });
   };
@@ -79,9 +92,17 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
     setItems((prev) =>
-      prev.map((i) =>
-        i.cartItemId === cartItemId ? { ...i, quantity } : i
-      )
+      prev.map((i) => {
+        if (i.cartItemId === cartItemId) {
+          // Aplicar limite de 2 para avulsos
+          if (i.product.requiredSizes && quantity > 2) {
+            toast.warning("Limite de 2 unidades atingido");
+            return { ...i, quantity: 2 };
+          }
+          return { ...i, quantity };
+        }
+        return i;
+      })
     );
   };
 

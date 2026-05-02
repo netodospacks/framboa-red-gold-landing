@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Plus, Users } from "lucide-react";
+import { Plus, Users, AlertCircle } from "lucide-react";
 import { useCart } from "@/hooks/use-cart";
 import { menuData, menuTabs, Product } from "@/config/data";
 import ProductModal from "./ProductModal";
@@ -86,6 +86,35 @@ const Menu = () => {
       </div>
 
       <div className="container px-0 mx-auto max-w-3xl bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
+        {/* Alertas de Limite */}
+        {active === "combos" ? (
+          <div className="bg-red-50 border-b border-red-100 px-5 py-3.5 flex items-center gap-3 animate-pulse-subtle">
+            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
+              <AlertCircle className="h-5 w-5" />
+            </div>
+            <p className="text-sm font-bold text-red-800">
+              ⚠️ Edição limitada: apenas 10 pedidos disponíveis
+            </p>
+          </div>
+        ) : (
+          <div className="flex flex-col">
+            <div className="bg-amber-50 border-b border-amber-100 px-5 py-3.5 flex items-center gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
+                <AlertCircle className="h-5 w-5" />
+              </div>
+              <p className="text-sm font-bold text-amber-900">
+                ⚠️ Disponível para até 28 pedidos
+              </p>
+            </div>
+            <div className="bg-white/50 px-5 py-2 border-b border-border/30">
+              <p className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                Limite de até 2 unidades por item
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="flex flex-col">
           {list.map((p) => (
             <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={active} />
