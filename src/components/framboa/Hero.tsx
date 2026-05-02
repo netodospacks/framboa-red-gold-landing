@@ -8,18 +8,18 @@ const Hero = () => {
         <div className="relative mx-auto max-w-5xl">
           
           {/* Imagem Central com Zoom e Sombreamento Branco */}
-          <div className="relative h-[280px] md:h-[400px] w-full rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-card">
+          <div className="relative h-[220px] md:h-[300px] w-full rounded-[1.5rem] md:rounded-[2.5rem] shadow-card mt-4">
             <img
               src={heroImage}
               alt="Capa Framboá"
-              className="absolute inset-0 w-full h-full object-cover scale-125 md:scale-110 object-[10%_center]"
+              className="absolute inset-0 w-full h-full object-cover scale-[1.35] md:scale-125 object-[20%_center] rounded-[1.5rem] md:rounded-[2.5rem]"
             />
-            {/* Sombra branca de baixo para cima */}
-            <div className="absolute inset-0 bg-gradient-to-t from-white via-white/40 to-transparent opacity-90 pointer-events-none" />
+            {/* Sombra branca de baixo para cima mais forte */}
+            <div className="absolute inset-0 rounded-[1.5rem] md:rounded-[2.5rem] bg-gradient-to-t from-white via-white/40 to-transparent opacity-90 pointer-events-none" />
             
             {/* Logo sobreposta na parte de baixo com moldura */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 z-10 mb-4">
-              <div className="h-24 w-24 md:h-32 md:w-32 rounded-full bg-white p-1 shadow-2xl ring-[6px] ring-white/80 border border-border/20 animate-float-up">
+            <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 z-10">
+              <div className="h-28 w-28 md:h-36 md:w-36 rounded-full bg-white p-2 shadow-2xl ring-4 ring-white border-[3px] border-accent/20 animate-float-up">
                 <img
                   src={logo}
                   alt="Logo Restaurante Framboá"

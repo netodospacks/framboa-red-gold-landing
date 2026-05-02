@@ -136,7 +136,7 @@ const Menu = () => {
         </div>
       </div>
 
-      <div className="container px-4 md:px-0 mx-auto max-w-3xl mt-8 mb-6">
+      <div className="container px-4 md:px-0 mx-auto max-w-3xl mt-8 mb-6 text-center">
         <h2 className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-accent">
           Seleção Exclusiva
         </h2>
