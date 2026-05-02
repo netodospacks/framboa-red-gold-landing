@@ -12,7 +12,7 @@ const Hero = () => {
           <img
             src={heroImage}
             alt="Capa Framboá"
-            className="absolute inset-0 w-full h-full object-cover object-[15%_center] scale-110"
+            className="absolute inset-0 w-full h-full object-cover object-[40%_center] md:object-[35%_center] scale-125"
           />
           {/* Sombra para integrar suavemente com o fundo e dar contraste no topo */}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/20 pointer-events-none" />
@@ -20,7 +20,7 @@ const Hero = () => {
         
         {/* Logo (colocada em relação ao container principal, vazando a imagem tranquilamente) */}
         <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 z-10">
-          <div className="h-28 w-28 md:h-36 md:w-36 rounded-full bg-white p-1.5 shadow-2xl ring-[6px] ring-white border border-accent/20 animate-float-up">
+          <div className="h-28 w-28 md:h-36 md:w-36 rounded-full bg-white p-1.5 shadow-[0_10px_40px_rgba(0,0,0,0.6)] ring-[6px] ring-white border border-accent/20 animate-float-up">
             <img
               src={logo}
               alt="Logo Restaurante Framboá"
