@@ -1,4 +1,4 @@
-import heroImage from "@/assets/hero-family.jpg";
+import heroImage from "@/assets/hero-family-original.jpg";
 import logo from "@/assets/framboa-logo.png";
 
 const Hero = () => {
