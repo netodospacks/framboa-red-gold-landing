@@ -12,7 +12,7 @@ const Hero = () => {
           <img
             src={heroImage}
             alt="Capa Framboá"
-            className="absolute inset-0 w-full h-full object-cover object-[40%_center] md:object-[35%_center] scale-125"
+            className="absolute inset-0 w-full h-full object-cover object-[40%_top] md:object-[35%_top] scale-125"
           />
           {/* Sombra para integrar suavemente com o fundo e dar contraste no topo */}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-black/20 pointer-events-none" />
