@@ -1,10 +1,37 @@
 import heroImage from "@/assets/framboa-hero.jpg";
 import logo from "@/assets/framboa-logo.png";
+import { Clock, MapPin } from "lucide-react";
 
 const Hero = () => {
   return (
-    <section className="relative px-2 pt-4 md:px-0 md:pt-6">
+    <section className="relative px-2 pt-3 md:px-0 md:pt-6">
       <div className="container px-0 md:px-8">
+        
+        {/* Barra de Status do Restaurante */}
+        <div className="mx-auto mb-3 flex max-w-2xl flex-wrap items-center justify-center gap-x-4 gap-y-2 rounded-full bg-card px-4 py-2 text-xs font-medium text-muted-foreground shadow-sm ring-1 ring-border/50 md:text-sm">
+          <div className="flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 text-primary" />
+            <span>0.8 km</span>
+          </div>
+          
+          <div className="h-1 w-1 rounded-full bg-border" />
+          
+          <div className="flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5 text-primary" />
+            <span>40-50 min</span>
+          </div>
+
+          <div className="h-1 w-1 rounded-full bg-border" />
+
+          <div className="flex items-center gap-1.5 font-semibold text-whatsapp">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-whatsapp opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-whatsapp"></span>
+            </span>
+            Aberto agora
+          </div>
+        </div>
+
         <div className="relative overflow-hidden rounded-[1.5rem] md:rounded-[2rem] shadow-card">
           <img
             src={heroImage}
