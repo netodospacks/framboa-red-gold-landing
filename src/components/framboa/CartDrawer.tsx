@@ -60,20 +60,19 @@ const CartDrawer = () => {
     let message = `${separator}\n\n`;
     message += `NOVO PEDIDO - RESTAURANTE FRAMBOÁ\n\n`;
     
-    message += `Cliente:\n`;
+    message += `DADOS DO CLIENTE:\n`;
     message += `Nome: ${clientName}\n`;
     message += `Telefone: ${clientPhone}\n\n`;
     
-    message += `Tipo:\n`;
-    message += `${orderType === "entrega" ? "Entrega" : "Retirada"}\n\n`;
-    
+    message += `TIPO DE PEDIDO:\n`;
+    message += `${orderType === "entrega" ? "Entrega" : "Retirada"}\n`;
     if (orderType === "entrega") {
-      message += `Endereço:\n`;
-      message += `${address}\n\n`;
+      message += `Endereço: ${address}\n`;
     }
+    message += `\n`;
 
     message += `${separator}\n\n`;
-    message += `Pedido:\n\n`;
+    message += `PEDIDO:\n\n`;
     
     items.forEach((item) => {
       const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
@@ -93,21 +92,21 @@ const CartDrawer = () => {
     });
 
     message += `${separator}\n\n`;
-    message += `Valores:\n\n`;
-    message += `Subtotal: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+    message += `VALORES:\n\n`;
+    message += `Subtotal dos itens: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
     
     if (depositFee > 0) {
-      message += `Caução: R$ ${depositFee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+      message += `Caução (Reembolsável): R$ ${depositFee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
     }
     
     if (orderType === "entrega") {
       message += `Taxa de entrega: R$ 30,00\n`;
     }
     
-    message += `\nTotal: R$ ${finalTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n\n`;
+    message += `\nTOTAL FINAL: R$ ${finalTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n\n`;
 
     message += `${separator}\n\n`;
-    message += `Observação:\n`;
+    message += `OBSERVAÇÃO:\n`;
     message += `Estou ciente da política de caução das travessas.\n\n`;
     message += `${separator}`;
 
