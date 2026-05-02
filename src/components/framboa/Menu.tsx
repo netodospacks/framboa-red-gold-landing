@@ -108,7 +108,7 @@ const Menu = () => {
                 <AlertCircle className="h-5 w-5" />
               </div>
               <p className="text-sm font-bold text-amber-900">
-                ⚠️ Disponível para até 28 pedidos
+                ⚠️ Disponível para até 18 pedidos
               </p>
             </div>
             <div className="bg-white/50 px-5 py-2 border-b border-border/30">
