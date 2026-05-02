@@ -1,38 +1,45 @@
-import { Award, Trophy } from "lucide-react";
+import { Award, Trophy, Store } from "lucide-react";
 
 const cards = [
   {
     icon: Trophy,
-    title: "Melhor Restaurante 2024",
-    sub: "Prêmio Sabor do Ano",
-    desc: "Eleito pelo terceiro ano consecutivo o melhor da cidade pela crítica especializada.",
+    title: "Campeão Nacional 2024",
+    sub: "Abrasel — Brasil",
+    desc: "Campeão Nacional 2024 e Melhor Restaurante a Quilo da Paraíba pela Abrasel.",
   },
   {
     icon: Award,
-    title: "Excelência em Atendimento",
-    sub: "TripAdvisor Travelers' Choice",
-    desc: "Top 1% dos restaurantes do mundo com base em avaliações reais dos nossos clientes.",
+    title: "Melhor Restaurante a Quilo 2025",
+    sub: "Abrasel — Paraíba",
+    desc: "Eleito Melhor Restaurante a Quilo da Paraíba 2025 pela Abrasel.",
+  },
+  {
+    icon: Store,
+    title: "Manaíra Shopping",
+    sub: "Entrega & Retirada",
+    desc: "Faça seu pedido com entrega rápida ou retire no nosso ponto no Manaíra Shopping.",
   },
 ];
 
 const Awards = () => {
   return (
-    <section className="container mt-16">
-      <div className="grid gap-6 md:grid-cols-2">
+    <section className="container mt-12 md:mt-16">
+      <div className="grid gap-5 md:grid-cols-3">
         {cards.map((c) => (
           <article
             key={c.title}
-            className="group relative overflow-hidden rounded-[1.5rem] border border-border bg-card p-7 shadow-soft transition-smooth hover:-translate-y-1 hover:shadow-card"
+            className="group relative overflow-hidden rounded-[1.5rem] border border-accent/20 bg-primary p-6 text-primary-foreground shadow-card transition-smooth hover:-translate-y-1 md:p-7"
           >
-            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/10 transition-smooth group-hover:scale-150" />
-            <div className="relative flex items-start gap-5">
+            <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-accent/15 transition-smooth group-hover:scale-150" />
+            <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-gold" />
+            <div className="relative flex items-start gap-4 md:gap-5">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-gold shadow-gold">
                 <c.icon className="h-7 w-7 text-primary" />
               </div>
               <div className="flex-1">
-                <div className="text-xs uppercase tracking-[0.2em] text-accent">{c.sub}</div>
-                <h3 className="mt-1 font-display text-2xl font-bold text-primary">{c.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{c.desc}</p>
+                <div className="text-[10px] uppercase tracking-[0.25em] text-accent">{c.sub}</div>
+                <h3 className="mt-1 font-display text-xl font-bold text-primary-foreground md:text-2xl">{c.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-primary-foreground/75">{c.desc}</p>
               </div>
             </div>
           </article>
