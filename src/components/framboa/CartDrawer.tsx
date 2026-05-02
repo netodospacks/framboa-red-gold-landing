@@ -37,10 +37,14 @@ const CartDrawer = () => {
 
     let message = "Olá! Gostaria de finalizar meu pedido:\n\n";
     items.forEach((item) => {
+      const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
       message += `${item.quantity}x ${item.product.name} - R$ ${(
-        item.product.priceValue * item.quantity
+        itemPrice * item.quantity
       ).toFixed(2)}\n`;
       
+      if (item.tamanho) {
+        message += `   • Tamanho: ${item.tamanho.name}\n`;
+      }
       if (item.entrada) {
         message += `   • Entrada: ${item.entrada.name}\n`;
       }
@@ -104,66 +108,74 @@ const CartDrawer = () => {
             </div>
           ) : (
             <div className="flex flex-col gap-6">
-              {items.map((item) => (
-                <div key={item.cartItemId} className="flex gap-4">
-                  <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-border/50">
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-1 flex-col justify-between">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex flex-col">
-                        <h3 className="font-bold leading-tight text-foreground line-clamp-2">
-                          {item.product.name}
-                        </h3>
-                        {item.entrada && (
-                          <span className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                            Entrada: {item.entrada.name}
-                          </span>
-                        )}
-                        {item.sobremesa && (
-                          <span className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
-                            Sobremesa: {item.sobremesa.name}
-                          </span>
-                        )}
-                      </div>
-                      <button
-                        onClick={() => removeFromCart(item.cartItemId)}
-                        className="p-1 shrink-0 text-muted-foreground transition-colors hover:text-destructive"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+              {items.map((item) => {
+                const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
+                return (
+                  <div key={item.cartItemId} className="flex gap-4">
+                    <div className="h-20 w-20 shrink-0 overflow-hidden rounded-xl border border-border/50">
+                      <img
+                        src={item.product.image}
+                        alt={item.product.name}
+                        className="h-full w-full object-cover"
+                      />
                     </div>
-                    <div className="flex items-center justify-between mt-3">
-                      <div className="flex items-center gap-3 rounded-full border border-border/50 px-3 py-1 text-sm font-semibold shadow-sm">
+                    <div className="flex flex-1 flex-col justify-between">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex flex-col">
+                          <h3 className="font-bold leading-tight text-foreground line-clamp-2">
+                            {item.product.name}
+                          </h3>
+                          {item.tamanho && (
+                            <span className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                              Tamanho: {item.tamanho.name}
+                            </span>
+                          )}
+                          {item.entrada && (
+                            <span className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                              Entrada: {item.entrada.name}
+                            </span>
+                          )}
+                          {item.sobremesa && (
+                            <span className="text-xs text-muted-foreground mt-0.5 line-clamp-1">
+                              Sobremesa: {item.sobremesa.name}
+                            </span>
+                          )}
+                        </div>
                         <button
-                          onClick={() =>
-                            updateQuantity(item.cartItemId, item.quantity - 1)
-                          }
-                          className="p-0.5 text-muted-foreground hover:text-primary transition-colors"
+                          onClick={() => removeFromCart(item.cartItemId)}
+                          className="p-1 shrink-0 text-muted-foreground transition-colors hover:text-destructive"
                         >
-                          <Minus className="h-3.5 w-3.5" />
-                        </button>
-                        <span className="w-4 text-center">{item.quantity}</span>
-                        <button
-                          onClick={() =>
-                            updateQuantity(item.cartItemId, item.quantity + 1)
-                          }
-                          className="p-0.5 text-muted-foreground hover:text-primary transition-colors"
-                        >
-                          <Plus className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
-                      <span className="font-bold text-primary">
-                        R$ {(item.product.priceValue * item.quantity).toFixed(2)}
-                      </span>
+                      <div className="flex items-center justify-between mt-3">
+                        <div className="flex items-center gap-3 rounded-full border border-border/50 px-3 py-1 text-sm font-semibold shadow-sm">
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.cartItemId, item.quantity - 1)
+                            }
+                            className="p-0.5 text-muted-foreground hover:text-primary transition-colors"
+                          >
+                            <Minus className="h-3.5 w-3.5" />
+                          </button>
+                          <span className="w-4 text-center">{item.quantity}</span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(item.cartItemId, item.quantity + 1)
+                            }
+                            className="p-0.5 text-muted-foreground hover:text-primary transition-colors"
+                          >
+                            <Plus className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
+                        <span className="font-bold text-primary">
+                          R$ {(itemPrice * item.quantity).toFixed(2)}
+                        </span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

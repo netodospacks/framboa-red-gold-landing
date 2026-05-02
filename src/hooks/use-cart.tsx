@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
-import { Product, ProductOption } from "@/config/data";
+import { Product, ProductOption, ProductSizeOption } from "@/config/data";
 
 export type CartItem = {
   cartItemId: string;
@@ -7,13 +7,14 @@ export type CartItem = {
   quantity: number;
   entrada?: ProductOption;
   sobremesa?: ProductOption;
+  tamanho?: ProductSizeOption;
 };
 
 type CartContextType = {
   items: CartItem[];
   itemsCount: number;
   total: number;
-  addToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption) => void;
+  addToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption, tamanho?: ProductSizeOption) => void;
   removeFromCart: (cartItemId: string) => void;
   updateQuantity: (cartItemId: string, quantity: number) => void;
   clearCart: () => void;
@@ -47,10 +48,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   }, [items]);
 
   const itemsCount = items.reduce((acc, item) => acc + item.quantity, 0);
-  const total = items.reduce((acc, item) => acc + item.product.priceValue * item.quantity, 0);
+  const total = items.reduce((acc, item) => {
+    const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
+    return acc + itemPrice * item.quantity;
+  }, 0);
 
-  const addToCart = (product: Product, entrada?: ProductOption, sobremesa?: ProductOption) => {
-    const cartItemId = `${product.id}-${entrada?.id || "none"}-${sobremesa?.id || "none"}`;
+  const addToCart = (product: Product, entrada?: ProductOption, sobremesa?: ProductOption, tamanho?: ProductSizeOption) => {
+    const cartItemId = `${product.id}-${entrada?.id || "none"}-${sobremesa?.id || "none"}-${tamanho?.id || "none"}`;
 
     setItems((prev) => {
       const existing = prev.find((i) => i.cartItemId === cartItemId);
@@ -61,7 +65,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             : i
         );
       }
-      return [...prev, { cartItemId, product, quantity: 1, entrada, sobremesa }];
+      return [...prev, { cartItemId, product, quantity: 1, entrada, sobremesa, tamanho }];
     });
   };
 

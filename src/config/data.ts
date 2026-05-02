@@ -8,6 +8,13 @@ export type ProductOption = {
   name: string;
 };
 
+export type ProductSizeOption = {
+  id: string;
+  name: string;
+  price: string;
+  priceValue: number;
+};
+
 export type Product = {
   id: string;
   name: string;
@@ -21,6 +28,7 @@ export type Product = {
   includedItems?: string[];
   requiredStarters?: ProductOption[];
   requiredDesserts?: ProductOption[];
+  requiredSizes?: ProductSizeOption[];
 };
 
 const defaultStarters: ProductOption[] = [
@@ -118,12 +126,116 @@ export const menuData = {
     },
   ] as Product[],
   
-  monteSeu: [] as Product[],
+  monteSeu: [
+    {
+      id: "a1",
+      name: "Isca de Filé ao Molho Gorgonzola",
+      price: "A partir de R$ 325,90",
+      priceValue: 325.90,
+      desc: "Deliciosas iscas de filé mignon ao molho gorgonzola.",
+      image: comboFamilia,
+      requiredSizes: [
+        { id: "sz1", name: "1kg", price: "R$ 325,90", priceValue: 325.90 },
+        { id: "sz2", name: "2kg", price: "R$ 600,00", priceValue: 600 },
+      ]
+    },
+    {
+      id: "a2",
+      name: "Salpicão",
+      price: "A partir de R$ 125,90",
+      priceValue: 125.90,
+      desc: "Salpicão tradicional cremoso, perfeito para acompanhar.",
+      image: comboEspecial,
+      requiredSizes: [
+        { id: "sz1", name: "1kg", price: "R$ 125,90", priceValue: 125.90 },
+        { id: "sz2", name: "2kg", price: "R$ 200,00", priceValue: 200 },
+      ]
+    },
+    {
+      id: "a3",
+      name: "Bacalhau Gratinado",
+      price: "R$ 650,00",
+      priceValue: 650,
+      desc: "Bacalhau nobre gratinado com batatas e creme especial.",
+      image: comboTradicional,
+      requiredSizes: [
+        { id: "sz1", name: "Apenas 2kg", price: "R$ 650,00", priceValue: 650 },
+      ]
+    },
+    {
+      id: "a4",
+      name: "Filé ao Molho Madeira",
+      price: "R$ 650,00",
+      priceValue: 650,
+      desc: "Medalhões de filé mignon ao clássico molho madeira.",
+      image: comboFamilia,
+      requiredSizes: [
+        { id: "sz1", name: "Apenas 2kg", price: "R$ 650,00", priceValue: 650 },
+      ]
+    },
+    {
+      id: "a5",
+      name: "Camarão aos 4 Queijos",
+      price: "R$ 540,00",
+      priceValue: 540,
+      desc: "Camarões graúdos envoltos em um cremoso molho quatro queijos.",
+      image: comboEspecial,
+      requiredSizes: [
+        { id: "sz1", name: "Apenas 2kg", price: "R$ 540,00", priceValue: 540 },
+      ]
+    },
+    {
+      id: "a6",
+      name: "Arroz de Salmão",
+      price: "A partir de R$ 300,00",
+      priceValue: 300,
+      desc: "Arroz soltinho cozido com lascas de salmão fresco e temperos finos.",
+      image: comboTradicional,
+      requiredSizes: [
+        { id: "sz1", name: "2kg", price: "R$ 300,00", priceValue: 300 },
+        { id: "sz2", name: "3kg", price: "R$ 450,00", priceValue: 450 },
+      ]
+    },
+    {
+      id: "a7",
+      name: "Pescada à Portuguesa",
+      price: "R$ 500,00",
+      priceValue: 500,
+      desc: "Pescada amarela ao estilo português, com batatas, cebola, pimentões e azeite.",
+      image: comboFamilia,
+      requiredSizes: [
+        { id: "sz1", name: "Apenas 2kg", price: "R$ 500,00", priceValue: 500 },
+      ]
+    },
+    {
+      id: "a8",
+      name: "Frango à Parmegiana",
+      price: "R$ 400,00",
+      priceValue: 400,
+      desc: "Filés de frango empanados, cobertos com muito queijo e molho de tomate artesanal.",
+      image: comboEspecial,
+      requiredSizes: [
+        { id: "sz1", name: "Apenas 2kg", price: "R$ 400,00", priceValue: 400 },
+      ]
+    },
+    {
+      id: "a9",
+      name: "Farofa Cítrica de Amêndoas",
+      price: "A partir de R$ 100,00",
+      priceValue: 100,
+      desc: "Nossa famosa farofa cítrica com lascas de amêndoas tostadas.",
+      image: comboTradicional,
+      requiredSizes: [
+        { id: "sz1", name: "450g", price: "R$ 100,00", priceValue: 100 },
+        { id: "sz2", name: "900g", price: "R$ 200,00", priceValue: 200 },
+      ]
+    },
+  ] as Product[],
 };
 
 export const menuTabs = [
   { id: "combos", label: "CARDÁPIO ESPECIAL" },
-  { id: "monte", label: "MONTE SEU CARDÁPIO" },
+  { id: "monte", label: "VENDA DE AVULSOS" },
 ] as const;
 
 export type AwardCard = {

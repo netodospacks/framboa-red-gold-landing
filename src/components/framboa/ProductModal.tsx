@@ -1,23 +1,25 @@
 import { useState, useEffect } from "react";
 import { X, Check, Info, Users } from "lucide-react";
-import { Product, ProductOption } from "@/config/data";
+import { Product, ProductOption, ProductSizeOption } from "@/config/data";
 
 interface ProductModalProps {
   product: Product | null;
   isOpen: boolean;
   onClose: () => void;
-  onAddToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption) => void;
+  onAddToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption, tamanho?: ProductSizeOption) => void;
 }
 
 const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalProps) => {
   const [selectedEntrada, setSelectedEntrada] = useState<ProductOption | undefined>();
   const [selectedSobremesa, setSelectedSobremesa] = useState<ProductOption | undefined>();
+  const [selectedTamanho, setSelectedTamanho] = useState<ProductSizeOption | undefined>();
 
   // Reset states when product changes
   useEffect(() => {
     if (isOpen) {
       setSelectedEntrada(undefined);
       setSelectedSobremesa(undefined);
+      setSelectedTamanho(undefined);
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -31,14 +33,17 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
 
   const canAdd =
     (product.requiredStarters ? selectedEntrada !== undefined : true) &&
-    (product.requiredDesserts ? selectedSobremesa !== undefined : true);
+    (product.requiredDesserts ? selectedSobremesa !== undefined : true) &&
+    (product.requiredSizes ? selectedTamanho !== undefined : true);
 
   const handleAdd = () => {
     if (canAdd) {
-      onAddToCart(product, selectedEntrada, selectedSobremesa);
+      onAddToCart(product, selectedEntrada, selectedSobremesa, selectedTamanho);
       onClose();
     }
   };
+
+  const displayPrice = selectedTamanho ? selectedTamanho.price : product.price;
 
   return (
     <>
@@ -98,6 +103,42 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
               </div>
             )}
           </div>
+
+          {/* Options: Sizes */}
+          {product.requiredSizes && product.requiredSizes.length > 0 && (
+            <div className="mt-2 border-t-8 border-secondary px-5 py-5">
+              <div className="mb-4 flex items-baseline justify-between">
+                <div>
+                  <h3 className="font-bold text-foreground text-lg">Tamanho</h3>
+                  <p className="text-sm text-muted-foreground">Escolha 1 opção</p>
+                </div>
+                <span className="rounded bg-accent/20 px-2 py-0.5 text-xs font-bold text-accent uppercase">
+                  Obrigatório
+                </span>
+              </div>
+              <div className="space-y-3">
+                {product.requiredSizes.map((opt) => (
+                  <label
+                    key={opt.id}
+                    className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-all duration-200 ${
+                      selectedTamanho?.id === opt.id
+                        ? "border-primary bg-primary/5 ring-1 ring-primary"
+                        : "border-border/50 bg-card hover:bg-secondary/30"
+                    }`}
+                    onClick={() => setSelectedTamanho(opt)}
+                  >
+                    <div>
+                      <span className="font-medium text-sm md:text-base pr-4 block">{opt.name}</span>
+                      <span className="text-sm text-muted-foreground">{opt.price}</span>
+                    </div>
+                    <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${selectedTamanho?.id === opt.id ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>
+                      {selectedTamanho?.id === opt.id && <Check className="h-3.5 w-3.5 text-primary-foreground" />}
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Options: Starters */}
           {product.requiredStarters && product.requiredStarters.length > 0 && (
@@ -178,7 +219,7 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
             }`}
           >
             <span className="text-lg">Adicionar ao pedido</span>
-            <span className="text-xl">{product.price}</span>
+            <span className="text-xl">{displayPrice}</span>
           </button>
         </div>
       </div>
