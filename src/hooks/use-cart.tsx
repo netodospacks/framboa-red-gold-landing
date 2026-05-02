@@ -75,10 +75,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         return prev;
       }
 
-      // Limite de 2 unidades para itens avulsos (com requiredSizes)
-      if (product.requiredSizes && ((existing?.quantity || 0) >= 2)) {
+      // Limite de 2 unidades por PRODUTO (independente do tamanho) para avulsos
+      const totalProductQuantity = prev
+        .filter((i) => i.product.id === product.id)
+        .reduce((acc, i) => acc + i.quantity, 0);
+
+      if (product.requiredSizes && totalProductQuantity >= 2) {
         toast.error("Limite de 2 unidades por item atingido", {
-          description: "Para este item, o limite máximo é de 2 unidades por pedido.",
+          description: `Você já possui 2 unidades de "${product.name}" no carrinho.`,
           duration: 3000,
         });
         return prev;
@@ -106,19 +110,32 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       removeFromCart(cartItemId);
       return;
     }
-    setItems((prev) =>
-      prev.map((i) => {
-        if (i.cartItemId === cartItemId) {
-          // Aplicar limite de 2 para avulsos
-          if (i.product.requiredSizes && quantity > 2) {
-            toast.warning("Limite de 2 unidades atingido");
-            return { ...i, quantity: 2 };
-          }
-          return { ...i, quantity };
+    setItems((prev) => {
+      const itemToUpdate = prev.find((i) => i.cartItemId === cartItemId);
+      if (!itemToUpdate) return prev;
+
+      // Se for item avulso, verificar o total do produto
+      if (itemToUpdate.product.requiredSizes) {
+        const otherItemsSameProduct = prev.filter(
+          (i) => i.product.id === itemToUpdate.product.id && i.cartItemId !== cartItemId
+        );
+        const otherQuantity = otherItemsSameProduct.reduce((acc, i) => acc + i.quantity, 0);
+        
+        if (otherQuantity + quantity > 2) {
+          toast.warning(`Limite de 2 unidades para ${itemToUpdate.product.name} atingido`);
+          const allowedQuantity = 2 - otherQuantity;
+          if (allowedQuantity <= 0) return prev;
+          
+          return prev.map((i) =>
+            i.cartItemId === cartItemId ? { ...i, quantity: allowedQuantity } : i
+          );
         }
-        return i;
-      })
-    );
+      }
+
+      return prev.map((i) =>
+        i.cartItemId === cartItemId ? { ...i, quantity } : i
+      );
+    });
   };
 
   const clearCart = () => {

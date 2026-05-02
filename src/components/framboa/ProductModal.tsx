@@ -14,7 +14,7 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
   const [selectedEntrada, setSelectedEntrada] = useState<ProductOption | undefined>();
   const [selectedSobremesa, setSelectedSobremesa] = useState<ProductOption | undefined>();
   const [selectedTamanho, setSelectedTamanho] = useState<ProductSizeOption | undefined>();
-  const { hasCombo } = useCart();
+  const { items, hasCombo } = useCart();
 
   // Reset states when product changes
   useEffect(() => {
@@ -36,8 +36,15 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
   const isCombo = !!product.serves;
   const blockDueToExistingCombo = isCombo && hasCombo;
 
+  const currentProductQty = items
+    .filter((i) => i.product.id === product.id)
+    .reduce((acc, i) => acc + i.quantity, 0);
+  
+  const isAtProductLimit = !!product.requiredSizes && currentProductQty >= 2;
+
   const canAdd =
     !blockDueToExistingCombo &&
+    !isAtProductLimit &&
     (product.requiredStarters ? selectedEntrada !== undefined : true) &&
     (product.requiredDesserts ? selectedSobremesa !== undefined : true) &&
     (product.requiredSizes ? selectedTamanho !== undefined : true);
@@ -227,7 +234,11 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
             }`}
           >
             <span className="text-lg">
-              {blockDueToExistingCombo ? "Limite de 1 cardápio atingido" : "Adicionar ao pedido"}
+              {blockDueToExistingCombo 
+                ? "Limite de 1 cardápio atingido" 
+                : isAtProductLimit 
+                  ? "Limite de 2 unidades atingido"
+                  : "Adicionar ao pedido"}
             </span>
             <span className="text-xl">{displayPrice}</span>
           </button>
