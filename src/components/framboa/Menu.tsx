@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { ChevronRight, Flame } from "lucide-react";
+import { Plus } from "lucide-react";
+import { useCart } from "@/hooks/use-cart";
 import comboFamilia from "@/assets/combo-familia.jpg";
 import comboEspecial from "@/assets/combo-especial.jpg";
 import comboTradicional from "@/assets/combo-tradicional.jpg";
@@ -8,8 +9,8 @@ type Product = {
   id: string;
   name: string;
   price: string;
+  priceValue: number;
   desc: string;
-  units: number;
   image: string;
 };
 
@@ -18,32 +19,32 @@ const combos: Product[] = [
     id: "1",
     name: "Combo Família Framboá",
     price: "R$ 189,90",
+    priceValue: 189.90,
     desc: "Picanha grelhada, arroz, farofa especial, salada da casa e sobremesa para 4 pessoas.",
-    units: 8,
     image: comboFamilia,
   },
   {
     id: "2",
     name: "Especial Salmão ao Risoto",
     price: "R$ 129,90",
+    priceValue: 129.90,
     desc: "Salmão grelhado em crosta de ervas com risoto de limão siciliano e legumes salteados.",
-    units: 12,
     image: comboEspecial,
   },
   {
     id: "3",
     name: "Tradição Brasileira",
     price: "R$ 89,90",
+    priceValue: 89.90,
     desc: "Feijoada completa servida com arroz, couve refogada, farofa, laranja e torresmo crocante.",
-    units: 5,
     image: comboTradicional,
   },
   {
     id: "4",
     name: "Combo Dia das Mães",
     price: "R$ 219,90",
+    priceValue: 219.90,
     desc: "Menu especial para 2 pessoas: entrada, prato principal à escolha, sobremesa e espumante.",
-    units: 6,
     image: comboEspecial,
   },
 ];
@@ -53,61 +54,54 @@ const monteSeu: Product[] = [
     id: "m1",
     name: "Monte: Carne + 2 acompanhamentos",
     price: "R$ 79,90",
+    priceValue: 79.90,
     desc: "Escolha seu corte, dois acompanhamentos da casa e uma bebida do nosso menu.",
-    units: 15,
     image: comboFamilia,
   },
   {
     id: "m2",
     name: "Monte: Peixe + Risoto",
     price: "R$ 99,90",
+    priceValue: 99.90,
     desc: "Selecione seu peixe favorito e combine com nossos risotos artesanais.",
-    units: 9,
     image: comboEspecial,
   },
 ];
 
 const tabs = [
-  { id: "combos", label: "Combos Especiais" },
-  { id: "monte", label: "Monte Seu Combo" },
+  { id: "combos", label: "Combos" },
+  { id: "monte", label: "Monte seu combo" },
 ] as const;
 
 const ProductCard = ({ p }: { p: Product }) => {
-  const low = p.units <= 6;
+  const { addToCart } = useCart();
+  
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[1.5rem] border border-border bg-card shadow-soft transition-smooth hover:-translate-y-1 hover:shadow-card">
-      <div className="relative h-60 overflow-hidden">
+    <article className="flex gap-4 p-5 md:p-6 border-b border-border/40 bg-card hover:bg-secondary/20 transition-colors last:border-b-0">
+      <div className="flex flex-1 flex-col">
+        <h3 className="font-display font-bold text-foreground text-lg md:text-xl leading-tight text-primary-foreground/90">{p.name}</h3>
+        <p className="mt-1.5 text-sm text-muted-foreground line-clamp-2 leading-snug md:line-clamp-3">{p.desc}</p>
+        
+        <div className="mt-auto pt-4 flex items-center justify-between">
+          <span className="font-bold text-primary text-lg md:text-xl drop-shadow-sm">{p.price}</span>
+          <button 
+            onClick={() => addToCart(p.priceValue)}
+            className="flex items-center gap-1.5 rounded-full bg-primary/10 px-4 py-1.5 text-sm font-semibold text-primary transition-smooth hover:bg-primary hover:text-primary-foreground hover:shadow-wine active:scale-95"
+            aria-label={`Adicionar ${p.name}`}
+          >
+            <Plus className="h-4 w-4" />
+            Adicionar
+          </button>
+        </div>
+      </div>
+      
+      <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl md:h-32 md:w-32 shadow-soft ring-1 ring-border/50">
         <img
           src={p.image}
           alt={p.name}
           loading="lazy"
-          width={1200}
-          height={900}
-          className="h-full w-full object-cover transition-smooth group-hover:scale-105"
+          className="h-full w-full object-cover transition-smooth hover:scale-105"
         />
-        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/60 to-transparent" />
-        <div className="absolute right-4 top-4 rounded-full bg-gradient-gold px-3 py-1 text-xs font-semibold text-primary shadow-gold">
-          {p.price}
-        </div>
-        {low && (
-          <div className="absolute left-4 top-4 inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground shadow-wine animate-pulse-soft">
-            <Flame className="h-3 w-3" /> Últimas {p.units}
-          </div>
-        )}
-      </div>
-
-      <div className="flex flex-1 flex-col p-5 md:p-6">
-        <h3 className="font-display text-lg font-bold text-primary md:text-xl">{p.name}</h3>
-        <p className="mt-2 flex-1 text-sm leading-relaxed text-muted-foreground">{p.desc}</p>
-
-        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <span className={`text-xs font-medium ${low ? "text-primary" : "text-muted-foreground"}`}>
-            {p.units} {p.units === 1 ? "unidade restante" : "unidades restantes"}
-          </span>
-          <button className="inline-flex w-full items-center justify-center gap-1 rounded-full bg-primary px-5 py-3 text-sm font-medium text-primary-foreground transition-smooth hover:bg-primary/90 hover:gap-2 sm:w-auto sm:py-2.5">
-            Ver opções <ChevronRight className="h-4 w-4" />
-          </button>
-        </div>
       </div>
     </article>
   );
@@ -118,37 +112,33 @@ const Menu = () => {
   const list = active === "combos" ? combos : monteSeu;
 
   return (
-    <section id="cardapio" className="container mt-16 md:mt-20">
-      <div className="text-center">
-        <span className="text-xs uppercase tracking-[0.4em] text-accent">Cardápio</span>
-        <h2 className="mt-2 font-display text-3xl font-bold text-primary md:text-5xl">
-          Sabores que contam histórias
-        </h2>
-        <div className="gold-divider mx-auto mt-5 w-24" />
-      </div>
-
-      <div className="mt-8 flex justify-center px-2">
-        <div className="inline-flex w-full max-w-md rounded-full border border-border bg-card p-1.5 shadow-soft sm:w-auto">
-          {tabs.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => setActive(t.id)}
-              className={`flex-1 rounded-full px-4 py-3 text-sm font-medium transition-smooth sm:flex-none md:px-7 ${
-                active === t.id
-                  ? "bg-gradient-primary text-primary-foreground shadow-wine"
-                  : "text-muted-foreground hover:text-primary"
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+    <section id="cardapio" className="mt-8 md:mt-12">
+      <div className="sticky top-20 z-30 bg-background/85 backdrop-blur-md border-b border-border/60 px-4 py-3 shadow-sm">
+        <div className="container px-0 mx-auto max-w-3xl overflow-x-auto no-scrollbar">
+          <div className="flex gap-3 min-w-max pb-1">
+            {tabs.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setActive(t.id)}
+                className={`rounded-full px-5 py-2 text-sm font-medium transition-smooth ${
+                  active === t.id
+                    ? "bg-primary text-primary-foreground shadow-wine"
+                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-primary"
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 md:mt-10">
-        {list.map((p) => (
-          <ProductCard key={p.id} p={p} />
-        ))}
+      <div className="container px-0 mx-auto max-w-3xl mt-4 md:mt-6 bg-card rounded-2xl shadow-soft border border-border/50 overflow-hidden">
+        <div className="flex flex-col">
+          {list.map((p) => (
+            <ProductCard key={p.id} p={p} />
+          ))}
+        </div>
       </div>
     </section>
   );
