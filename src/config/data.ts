@@ -1,7 +1,4 @@
 import { Award, Trophy, Store, LucideIcon } from "lucide-react";
-import comboFamilia from "@/assets/combo-familia.jpg";
-import comboEspecial from "@/assets/combo-especial.jpg";
-import comboTradicional from "@/assets/combo-tradicional.jpg";
 
 import iscaFile from "@/assets/isca_file_gorgonzola_1777757530486.png";
 import salpicaoImg from "@/assets/salpicao_1777757547699.png";
@@ -59,7 +56,7 @@ export const menuData = {
       price: "R$ 1.279,00",
       priceValue: 1279,
       desc: "Menu completo para até 15 pessoas, com clássicos irresistíveis.",
-      image: comboFamilia,
+      image: "/imagens_cardapio/Mesa de Mãe.jpeg",
       serves: 15,
       deposit: 110,
       pricePerPerson: 85.27,
@@ -79,7 +76,7 @@ export const menuData = {
       price: "R$ 1.379,00",
       priceValue: 1379,
       desc: "Menu especial com Bacalhau e Camarão para 15 pessoas.",
-      image: comboEspecial,
+      image: "/imagens_cardapio/Domingo com a Mãe .jpeg",
       serves: 15,
       deposit: 110,
       pricePerPerson: 91.93,
@@ -99,7 +96,7 @@ export const menuData = {
       price: "R$ 1.479,00",
       priceValue: 1479,
       desc: "Sofisticação com Filé Mignon e Camarão para grandes encontros.",
-      image: comboTradicional,
+      image: "/imagens_cardapio/Mãe Merece.jpeg",
       serves: 15,
       deposit: 110,
       pricePerPerson: 98.60,
@@ -119,7 +116,7 @@ export const menuData = {
       price: "R$ 1.589,00",
       priceValue: 1589,
       desc: "O banquete supremo com Pescada e Camarão para 15 convidados.",
-      image: comboEspecial,
+      image: "/imagens_cardapio/do Jeito que a Mãe faz.jpeg",
       serves: 15,
       deposit: 110,
       pricePerPerson: 105.93,
