@@ -17,33 +17,84 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product; onOpenM
           </p>
         )}
         
-        {p.serves && (
-          <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-muted-foreground">
-            <Users className="h-4 w-4" />
-            Serve {p.serves} pessoas
+        {active === "combos" ? (
+          <div className="mt-4 flex flex-col gap-2">
+            <div className="flex items-center gap-1.5 text-xs font-bold text-accent uppercase tracking-wider">
+              <Users className="h-3.5 w-3.5" />
+              Serve até {p.serves} pessoas
+            </div>
+            <div className="flex flex-col gap-0.5">
+              <span className="text-lg font-black text-accent drop-shadow-sm">
+                R$ {p.pricePerPerson?.toFixed(2).replace('.', ',')} por pessoa
+              </span>
+              <span className="text-[11px] text-muted-foreground font-semibold uppercase tracking-widest">
+                Toque para ver detalhes e montar
+              </span>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-4 flex flex-col gap-3">
+            {p.requiredSizes && (
+              <div className="flex flex-col gap-3">
+                {p.requiredSizes.map((size) => (
+                  <div key={size.id} className="flex flex-col gap-1 rounded-xl bg-secondary/30 p-3 border border-border/40">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-bold text-foreground">
+                        {size.name} • Serve {size.serves} pessoas
+                      </span>
+                      {size.consumption && (
+                        <span className="text-[10px] font-bold text-accent uppercase tracking-wider bg-accent/10 px-2 py-0.5 rounded">
+                          {size.consumption} por pessoa
+                        </span>
+                      )}
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <span className="text-base font-black text-primary">
+                        R$ {size.pricePerPerson?.toFixed(2).replace('.', ',')}
+                      </span>
+                      <span className="text-xs font-semibold text-muted-foreground">
+                        por pessoa
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {!p.requiredSizes && (
+              <span className="font-sans font-bold text-muted-foreground/80 text-base">
+                {p.price}
+              </span>
+            )}
           </div>
         )}
 
-        <div className="mt-auto pt-4 flex items-center justify-between">
-          <span className="font-display font-black text-primary text-2xl md:text-3xl tracking-tight drop-shadow-sm">
-            {p.price}
-          </span>
+        <div className="mt-auto pt-5 flex items-center justify-between">
+          {active === "monte" && (
+            <span className="text-[11px] font-bold uppercase tracking-widest text-primary/70">
+              {p.requiredSizes ? "Escolha o tamanho" : "Adicionar ao pedido"}
+            </span>
+          )}
+          
           <button 
             disabled={active === "combos" && hasCombo}
             className={`flex items-center gap-1.5 rounded-full px-5 py-2 text-sm font-bold transition-all duration-300 active:scale-95 ${
               active === "combos" && hasCombo
                 ? "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
-                : "bg-primary/5 border border-primary/20 text-primary hover:bg-primary hover:text-primary-foreground hover:shadow-wine hover:border-transparent"
+                : "bg-primary text-primary-foreground shadow-wine hover:scale-105"
             }`}
             aria-label={`Ver ${p.name}`}
           >
-            <Plus className="h-4 w-4" />
-            {active === "combos" && hasCombo ? "Já escolhido" : "Adicionar"}
+            {active === "combos" ? (hasCombo ? "Já escolhido" : "Monte do seu jeito") : (
+              <>
+                <Plus className="h-4 w-4" />
+                Adicionar
+              </>
+            )}
           </button>
         </div>
       </div>
       
-      {active !== "monte" && (
+      {active === "combos" && (
         <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-[1.25rem] md:h-36 md:w-36 shadow-md ring-1 ring-border/50">
           <img
             src={p.image}
@@ -92,7 +143,7 @@ const Menu = () => {
           Seleção Exclusiva
         </h2>
         <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mt-1">
-          {active === "combos" ? "CARDÁPIOS Especiais" : "MONTE SEU Cardápio"}
+          {active === "combos" ? "CARDÁPIOS Especiais" : "PEDIDO AVULSO"}
         </h3>
       </div>
 

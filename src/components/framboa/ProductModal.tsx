@@ -96,9 +96,9 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
                 </div>
               )}
               {product.pricePerPerson && (
-                <div className="flex items-center gap-1.5 rounded-full bg-secondary/80 px-3 py-1 text-xs font-semibold text-secondary-foreground">
+                <div className="flex items-center gap-1.5 rounded-full bg-accent/10 px-3 py-1.5 text-xs font-bold text-accent border border-accent/20">
                   <Info className="h-3.5 w-3.5" />
-                  R$ {product.pricePerPerson.toFixed(2).replace(".", ",")} / pessoa
+                  R$ {product.pricePerPerson.toFixed(2).replace(".", ",")} por pessoa
                 </div>
               )}
             </div>
@@ -122,34 +122,38 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
           {/* Options: Sizes */}
           {product.requiredSizes && product.requiredSizes.length > 0 && (
             <div className="mt-2 border-t-8 border-secondary px-5 py-5">
-              <div className="mb-4 flex items-baseline justify-between">
-                <div>
-                  <h3 className="font-bold text-foreground text-lg">Tamanho</h3>
-                  <p className="text-sm text-muted-foreground">Escolha 1 opção</p>
+              <div className="mb-4 flex flex-col">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-foreground text-lg">Escolha o Tamanho</h3>
+                  <span className="rounded bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-accent uppercase tracking-tighter">
+                    Obrigatório
+                  </span>
                 </div>
-                <span className="rounded bg-accent/20 px-2 py-0.5 text-xs font-bold text-accent uppercase">
-                  Obrigatório
-                </span>
+                <p className="text-sm text-muted-foreground mt-0.5">Selecione a quantidade desejada</p>
               </div>
-              <div className="space-y-3">
+              <div className="grid grid-cols-2 gap-3">
                 {product.requiredSizes.map((opt) => (
-                  <label
+                  <button
                     key={opt.id}
-                    className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-all duration-200 ${
-                      selectedTamanho?.id === opt.id
-                        ? "border-primary bg-primary/5 ring-1 ring-primary"
-                        : "border-border/50 bg-card hover:bg-secondary/30"
-                    }`}
                     onClick={() => setSelectedTamanho(opt)}
+                    className={`flex flex-col items-center justify-center rounded-2xl border-2 p-4 transition-all duration-300 ${
+                      selectedTamanho?.id === opt.id
+                        ? "border-primary bg-primary/5 ring-1 ring-primary shadow-md"
+                        : "border-border/40 bg-card hover:bg-secondary/20 hover:border-border"
+                    }`}
                   >
-                    <div>
-                      <span className="font-medium text-sm md:text-base pr-4 block">{opt.name}</span>
-                      <span className="text-sm text-muted-foreground">{opt.price}</span>
-                    </div>
-                    <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${selectedTamanho?.id === opt.id ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>
-                      {selectedTamanho?.id === opt.id && <Check className="h-3.5 w-3.5 text-primary-foreground" />}
-                    </div>
-                  </label>
+                    <span className={`text-base font-bold transition-colors ${selectedTamanho?.id === opt.id ? "text-primary" : "text-foreground"}`}>
+                      {opt.name}
+                    </span>
+                    <span className="mt-1 text-sm font-medium text-muted-foreground">
+                      {opt.price}
+                    </span>
+                    {selectedTamanho?.id === opt.id && (
+                      <div className="mt-2 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-primary-foreground">
+                        <Check className="h-3 w-3" />
+                      </div>
+                    )}
+                  </button>
                 ))}
               </div>
             </div>
@@ -158,31 +162,33 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
           {/* Options: Starters */}
           {product.requiredStarters && product.requiredStarters.length > 0 && (
             <div className="mt-2 border-t-8 border-secondary px-5 py-5">
-              <div className="mb-4 flex items-baseline justify-between">
-                <div>
-                  <h3 className="font-bold text-foreground text-lg">Entrada</h3>
-                  <p className="text-sm text-muted-foreground">Escolha 1 opção</p>
+              <div className="mb-4 flex flex-col">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-foreground text-lg">Entrada Inclusa</h3>
+                  <span className="rounded bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-accent uppercase tracking-tighter">
+                    Obrigatório
+                  </span>
                 </div>
-                <span className="rounded bg-accent/20 px-2 py-0.5 text-xs font-bold text-accent uppercase">
-                  Obrigatório
-                </span>
+                <p className="text-sm text-muted-foreground mt-0.5">Escolha 1 opção para acompanhar</p>
               </div>
               <div className="space-y-3">
                 {product.requiredStarters.map((opt) => (
-                  <label
+                  <button
                     key={opt.id}
-                    className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-all duration-200 ${
-                      selectedEntrada?.id === opt.id
-                        ? "border-primary bg-primary/5 ring-1 ring-primary"
-                        : "border-border/50 bg-card hover:bg-secondary/30"
-                    }`}
                     onClick={() => setSelectedEntrada(opt)}
+                    className={`flex w-full cursor-pointer items-center justify-between rounded-2xl border-2 p-4 text-left transition-all duration-300 ${
+                      selectedEntrada?.id === opt.id
+                        ? "border-primary bg-primary/5 ring-1 ring-primary shadow-sm"
+                        : "border-border/40 bg-card hover:bg-secondary/20"
+                    }`}
                   >
-                    <span className="font-medium text-sm md:text-base pr-4">{opt.name}</span>
-                    <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${selectedEntrada?.id === opt.id ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>
-                      {selectedEntrada?.id === opt.id && <Check className="h-3.5 w-3.5 text-primary-foreground" />}
+                    <span className={`flex-1 font-bold text-sm md:text-base leading-tight ${selectedEntrada?.id === opt.id ? "text-primary" : "text-foreground"}`}>
+                      {opt.name}
+                    </span>
+                    <div className={`ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${selectedEntrada?.id === opt.id ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/30"}`}>
+                      {selectedEntrada?.id === opt.id && <Check className="h-4 w-4" />}
                     </div>
-                  </label>
+                  </button>
                 ))}
               </div>
             </div>
@@ -191,31 +197,33 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
           {/* Options: Desserts */}
           {product.requiredDesserts && product.requiredDesserts.length > 0 && (
             <div className="mt-2 border-t-8 border-secondary px-5 py-5">
-              <div className="mb-4 flex items-baseline justify-between">
-                <div>
-                  <h3 className="font-bold text-foreground text-lg">Sobremesa</h3>
-                  <p className="text-sm text-muted-foreground">Escolha 1 opção</p>
+              <div className="mb-4 flex flex-col">
+                <div className="flex items-center justify-between">
+                  <h3 className="font-bold text-foreground text-lg">Sobremesa Inclusa</h3>
+                  <span className="rounded bg-accent/20 px-2 py-0.5 text-[10px] font-bold text-accent uppercase tracking-tighter">
+                    Obrigatório
+                  </span>
                 </div>
-                <span className="rounded bg-accent/20 px-2 py-0.5 text-xs font-bold text-accent uppercase">
-                  Obrigatório
-                </span>
+                <p className="text-sm text-muted-foreground mt-0.5">Escolha 1 opção de sobremesa</p>
               </div>
               <div className="space-y-3">
                 {product.requiredDesserts.map((opt) => (
-                  <label
+                  <button
                     key={opt.id}
-                    className={`flex cursor-pointer items-center justify-between rounded-xl border p-4 transition-all duration-200 ${
-                      selectedSobremesa?.id === opt.id
-                        ? "border-primary bg-primary/5 ring-1 ring-primary"
-                        : "border-border/50 bg-card hover:bg-secondary/30"
-                    }`}
                     onClick={() => setSelectedSobremesa(opt)}
+                    className={`flex w-full cursor-pointer items-center justify-between rounded-2xl border-2 p-4 text-left transition-all duration-300 ${
+                      selectedSobremesa?.id === opt.id
+                        ? "border-primary bg-primary/5 ring-1 ring-primary shadow-sm"
+                        : "border-border/40 bg-card hover:bg-secondary/20"
+                    }`}
                   >
-                    <span className="font-medium text-sm md:text-base pr-4">{opt.name}</span>
-                    <div className={`flex h-5 w-5 shrink-0 items-center justify-center rounded-full border ${selectedSobremesa?.id === opt.id ? "border-primary bg-primary" : "border-muted-foreground/30"}`}>
-                      {selectedSobremesa?.id === opt.id && <Check className="h-3.5 w-3.5 text-primary-foreground" />}
+                    <span className={`flex-1 font-bold text-sm md:text-base leading-tight ${selectedSobremesa?.id === opt.id ? "text-primary" : "text-foreground"}`}>
+                      {opt.name}
+                    </span>
+                    <div className={`ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full border-2 transition-colors ${selectedSobremesa?.id === opt.id ? "border-primary bg-primary text-primary-foreground" : "border-muted-foreground/30"}`}>
+                      {selectedSobremesa?.id === opt.id && <Check className="h-4 w-4" />}
                     </div>
-                  </label>
+                  </button>
                 ))}
               </div>
             </div>
@@ -238,9 +246,12 @@ const ProductModal = ({ product, isOpen, onClose, onAddToCart }: ProductModalPro
                 ? "Limite de 1 cardápio atingido" 
                 : isAtProductLimit 
                   ? "Limite de 2 unidades atingido"
-                  : "Adicionar ao pedido"}
+                  : "Confirmar seleção"}
             </span>
-            <span className="text-xl">{displayPrice}</span>
+            <div className="flex flex-col items-end">
+              <span className="text-[10px] uppercase font-bold tracking-wider opacity-70 leading-none mb-0.5">Total</span>
+              <span className="text-lg font-sans font-medium tracking-tight leading-none">{displayPrice}</span>
+            </div>
           </button>
         </div>
       </div>

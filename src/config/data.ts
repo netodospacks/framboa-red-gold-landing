@@ -132,30 +132,30 @@ export const menuData = {
       requiredDesserts: defaultDesserts,
     },
   ] as Product[],
-  
+
   monteSeu: [
     {
       id: "a1",
       name: "Isca de Filé ao Molho Gorgonzola",
-      price: "A partir de R$ 325,90",
+      price: "R$ 325,90",
       priceValue: 325.90,
       desc: "Deliciosas iscas de filé mignon ao molho gorgonzola.",
       image: iscaFile,
       requiredSizes: [
-        { id: "sz1", name: "1kg", price: "R$ 325,90", priceValue: 325.90 },
-        { id: "sz2", name: "2kg", price: "R$ 600,00", priceValue: 600 },
+        { id: "sz1", name: "1kg", price: "R$ 325,90", priceValue: 325.90, serves: 4, pricePerPerson: 81.25, consumption: "+250g" },
+        { id: "sz2", name: "2kg", price: "R$ 600,00", priceValue: 600, serves: 8, pricePerPerson: 75.00, consumption: "+250g" },
       ]
     },
     {
       id: "a2",
       name: "Salpicão",
-      price: "A partir de R$ 125,90",
+      price: "R$ 125,90",
       priceValue: 125.90,
       desc: "Salpicão tradicional cremoso, perfeito para acompanhar.",
       image: salpicaoImg,
       requiredSizes: [
-        { id: "sz1", name: "1kg", price: "R$ 125,90", priceValue: 125.90 },
-        { id: "sz2", name: "2kg", price: "R$ 200,00", priceValue: 200 },
+        { id: "sz1", name: "1kg", price: "R$ 125,90", priceValue: 125.90, serves: 4, pricePerPerson: 31.48, consumption: "250g" },
+        { id: "sz2", name: "2kg", price: "R$ 200,00", priceValue: 200, serves: 8, pricePerPerson: 25.00, consumption: "250g" },
       ]
     },
     {
@@ -166,7 +166,7 @@ export const menuData = {
       desc: "Bacalhau nobre gratinado com batatas e creme especial.",
       image: bacalhauImg,
       requiredSizes: [
-        { id: "sz1", name: "Apenas 2kg", price: "R$ 650,00", priceValue: 650 },
+        { id: "sz1", name: "2kg", price: "R$ 650,00", priceValue: 650, serves: 6, pricePerPerson: 108.33, consumption: "+300g" },
       ]
     },
     {
@@ -174,10 +174,10 @@ export const menuData = {
       name: "Filé ao Molho Madeira",
       price: "R$ 650,00",
       priceValue: 650,
-      desc: "Medalhões de filé mignon ao clássico molho madeira.",
+      desc: "Filé mignon ao clássico molho madeira.",
       image: fileMadeiraImg,
       requiredSizes: [
-        { id: "sz1", name: "Apenas 2kg", price: "R$ 650,00", priceValue: 650 },
+        { id: "sz1", name: "2kg", price: "R$ 650,00", priceValue: 650, serves: 6, pricePerPerson: 108.33, consumption: "+300g" },
       ]
     },
     {
@@ -188,19 +188,19 @@ export const menuData = {
       desc: "Camarões graúdos envoltos em um cremoso molho quatro queijos.",
       image: camaraoQueijosImg,
       requiredSizes: [
-        { id: "sz1", name: "Apenas 2kg", price: "R$ 540,00", priceValue: 540 },
+        { id: "sz1", name: "2kg", price: "R$ 540,00", priceValue: 540, serves: 6, pricePerPerson: 90.00, consumption: "+300g" },
       ]
     },
     {
       id: "a6",
       name: "Arroz de Salmão",
-      price: "A partir de R$ 300,00",
+      price: "R$ 300,00",
       priceValue: 300,
       desc: "Arroz soltinho cozido com lascas de salmão fresco e temperos finos.",
       image: arrozSalmaoImg,
       requiredSizes: [
-        { id: "sz1", name: "2kg", price: "R$ 300,00", priceValue: 300 },
-        { id: "sz2", name: "3kg", price: "R$ 450,00", priceValue: 450 },
+        { id: "sz1", name: "2kg", price: "R$ 300,00", priceValue: 300, serves: 6, pricePerPerson: 50.00, consumption: "+300g" },
+        { id: "sz2", name: "3kg", price: "R$ 450,00", priceValue: 450, serves: 9, pricePerPerson: 50.00, consumption: "+300g" },
       ]
     },
     {
@@ -211,7 +211,7 @@ export const menuData = {
       desc: "Pescada amarela ao estilo português, com batatas, cebola, pimentões e azeite.",
       image: pescadaImg,
       requiredSizes: [
-        { id: "sz1", name: "Apenas 2kg", price: "R$ 500,00", priceValue: 500 },
+        { id: "sz1", name: "2kg", price: "R$ 500,00", priceValue: 500, serves: 6, pricePerPerson: 83.33, consumption: "+300g" },
       ]
     },
     {
@@ -222,19 +222,19 @@ export const menuData = {
       desc: "Filés de frango empanados, cobertos com muito queijo e molho de tomate artesanal.",
       image: frangoImg,
       requiredSizes: [
-        { id: "sz1", name: "Apenas 2kg", price: "R$ 400,00", priceValue: 400 },
+        { id: "sz1", name: "2kg", price: "R$ 400,00", priceValue: 400, serves: 6, pricePerPerson: 66.67, consumption: "+300g" },
       ]
     },
     {
       id: "a9",
       name: "Farofa Cítrica de Amêndoas",
-      price: "A partir de R$ 100,00",
+      price: "R$ 100,00",
       priceValue: 100,
       desc: "Nossa famosa farofa cítrica com lascas de amêndoas tostadas.",
       image: farofaImg,
       requiredSizes: [
-        { id: "sz1", name: "450g", price: "R$ 100,00", priceValue: 100 },
-        { id: "sz2", name: "900g", price: "R$ 200,00", priceValue: 200 },
+        { id: "sz1", name: "450g", price: "R$ 100,00", priceValue: 100, serves: 6, pricePerPerson: 16.66, consumption: "75g" },
+        { id: "sz2", name: "900g", price: "R$ 200,00", priceValue: 200, serves: 12, pricePerPerson: 16.66, consumption: "75g" },
       ]
     },
   ] as Product[],
@@ -242,7 +242,7 @@ export const menuData = {
 
 export const menuTabs = [
   { id: "combos", label: "CARDÁPIO ESPECIAL" },
-  { id: "monte", label: "MONTE SEU CARDÁPIO" },
+  { id: "monte", label: "PEDIDO AVULSO" },
 ] as const;
 
 export type AwardCard = {
