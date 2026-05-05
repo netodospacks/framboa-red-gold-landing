@@ -197,6 +197,7 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
 };
 
 const Menu = () => {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const { addToCart, hasCombo, activeMenuTab, setActiveMenuTab } = useCart();
   
   const list = activeMenuTab === "combos" 
