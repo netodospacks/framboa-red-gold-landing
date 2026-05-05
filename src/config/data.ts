@@ -338,7 +338,7 @@ export const menuData = {
 };
 
 export const menuTabs = [
-  { id: "cardapio_7_pessoas", label: "CARDÁPIO 7 PESSOAS" },
+  { id: "cardapio_7_pessoas", label: "CARDÁPIO 07 PESSOAS" },
   { id: "combos", label: "CARDÁPIO 15 PESSOAS" },
   { id: "monte", label: "PEDIDO AVULSO" },
 ] as const;

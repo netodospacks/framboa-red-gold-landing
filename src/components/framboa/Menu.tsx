@@ -209,13 +209,11 @@ const Menu = () => {
           Seleção Exclusiva
         </h2>
         <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mt-1">
-          {active === "cardapio_7_pessoas" ? "CARDÁPIO 7 PESSOAS" : active === "combos" ? "CARDÁPIO 15 PESSOAS" : "PEDIDO AVULSO"}
+          {active === "cardapio_7_pessoas" ? "CARDÁPIO 07 PESSOAS" : active === "combos" ? "CARDÁPIO 15 PESSOAS" : "PEDIDO AVULSO"}
         </h3>
-        {active === "cardapio_7_pessoas" && (
-          <p className="mt-2 text-sm md:text-base text-muted-foreground font-medium italic">
-            Ideal para reunir a família nesse Dia das Mães
-          </p>
-        )}
+        <p className="mt-2 text-sm md:text-base text-muted-foreground font-medium italic">
+          Ideal para reunir a família nesse Dia das Mães
+        </p>
       </div>
 
       <div className="container px-0 mx-auto max-w-3xl bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
