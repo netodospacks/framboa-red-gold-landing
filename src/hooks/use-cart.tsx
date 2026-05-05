@@ -23,6 +23,8 @@ type CartContextType = {
   clearCart: () => void;
   isCartOpen: boolean;
   setIsCartOpen: (isOpen: boolean) => void;
+  activeMenuTab: string;
+  setActiveMenuTab: (tab: string) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -44,6 +46,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   });
   
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [activeMenuTab, setActiveMenuTab] = useState("cardapio_7_pessoas");
 
   // Salvar no localStorage sempre que os itens mudarem
   useEffect(() => {
@@ -161,6 +164,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         clearCart,
         isCartOpen,
         setIsCartOpen,
+        activeMenuTab,
+        setActiveMenuTab,
       }}
     >
       {children}

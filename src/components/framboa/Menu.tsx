@@ -36,8 +36,7 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
         {isSevenPeople ? (
           <div className="mt-4 flex flex-col gap-3">
             <div className="flex items-center gap-1.5 text-xs font-bold text-accent uppercase tracking-wider">
-              <Users className="h-3.5 w-3.5" />
-              Serve até 7 pessoas (≈760g por pessoa)
+              Serve até 7 pessoas
             </div>
             
             <div className="flex flex-col gap-0.5">
@@ -172,13 +171,11 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
 };
 
 const Menu = () => {
-  const [active, setActive] = useState<(typeof menuTabs)[number]["id"]>("cardapio_7_pessoas");
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const { addToCart, hasCombo } = useCart();
+  const { addToCart, hasCombo, activeMenuTab, setActiveMenuTab } = useCart();
   
-  const list = active === "combos" 
+  const list = activeMenuTab === "combos" 
     ? menuData.combos 
-    : active === "cardapio_7_pessoas" 
+    : activeMenuTab === "cardapio_7_pessoas" 
     ? menuData.combosSetePessoas 
     : menuData.monteSeu;
 
@@ -190,9 +187,9 @@ const Menu = () => {
             {menuTabs.map((t) => (
               <button
                 key={t.id}
-                onClick={() => setActive(t.id)}
+                onClick={() => setActiveMenuTab(t.id)}
                 className={`rounded-full px-5 py-2 text-sm font-medium transition-smooth ${
-                  active === t.id
+                  activeMenuTab === t.id
                     ? "bg-primary text-primary-foreground shadow-wine"
                     : "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-primary"
                 } ${t.id === "cardapio_7_pessoas" ? "animate-pulse-subtle ring-2 ring-primary/20" : ""}`}
@@ -209,7 +206,7 @@ const Menu = () => {
           Seleção Exclusiva
         </h2>
         <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mt-1">
-          {active === "cardapio_7_pessoas" ? "CARDÁPIO 07 PESSOAS" : active === "combos" ? "CARDÁPIO 15 PESSOAS" : "PEDIDO AVULSO"}
+          {activeMenuTab === "cardapio_7_pessoas" ? "CARDÁPIO 07 PESSOAS" : activeMenuTab === "combos" ? "CARDÁPIO 15 PESSOAS" : "PEDIDO AVULSO"}
         </h3>
         <p className="mt-2 text-sm md:text-base text-muted-foreground font-medium italic">
           Ideal para reunir a família nesse Dia das Mães
@@ -218,7 +215,7 @@ const Menu = () => {
 
       <div className="container px-0 mx-auto max-w-3xl bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
         {/* Alertas de Limite */}
-        {active === "combos" || active === "cardapio_7_pessoas" ? (
+        {activeMenuTab === "combos" || activeMenuTab === "cardapio_7_pessoas" ? (
           <div className="bg-red-50 border-b border-red-100 px-5 py-3.5 flex items-center gap-3 animate-pulse-subtle">
             <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
               <AlertCircle className="h-5 w-5" />
@@ -248,7 +245,7 @@ const Menu = () => {
 
         <div className="flex flex-col">
           {list.map((p) => (
-            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={active} hasCombo={hasCombo} />
+            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={activeMenuTab} hasCombo={hasCombo} />
           ))}
         </div>
       </div>
