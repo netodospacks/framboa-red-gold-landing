@@ -64,11 +64,11 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
           </div>
         )}
         
-        {isSevenPeople ? (
+        {(isSevenPeople || active === "combos") ? (
           <div className="mt-5 flex flex-col gap-4">
             <div className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-wider bg-accent/5 self-start px-3 py-1.5 rounded-full border border-accent/10">
               <Users className="h-3.5 w-3.5" />
-              Serve até 07 pessoas
+              Serve até {isSevenPeople ? "07" : p.serves} pessoas
             </div>
             
             <div className="flex flex-col gap-0.5">
@@ -86,16 +86,21 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
 
             <div className="mt-2 flex flex-wrap gap-3">
               <button 
+                disabled={active === "combos" && hasCombo}
                 onClick={(e) => {
                   e.stopPropagation();
                   onOpenModal(p);
                 }}
-                className="flex-1 bg-gradient-primary text-primary-foreground rounded-full px-6 py-3.5 text-sm font-bold shadow-card shadow-wine hover:scale-[1.02] transition-all duration-300 active:scale-95"
+                className={`flex-1 rounded-full px-6 py-3.5 text-sm font-bold transition-all duration-300 active:scale-95 ${
+                  active === "combos" && hasCombo
+                    ? "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
+                    : "bg-gradient-primary text-primary-foreground shadow-card shadow-wine hover:scale-[1.02]"
+                }`}
               >
-                Quero esse cardápio
+                {active === "combos" && hasCombo ? "Já escolhido" : "Quero esse cardápio"}
               </button>
               <a 
-                href={whatsappLink}
+                href={`https://wa.me/5583982309183?text=${encodeURIComponent(`Olá! Tenho interesse neste cardápio para ${isSevenPeople ? "7" : "15"} pessoas: ${p.name}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
@@ -107,59 +112,39 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
           </div>
         ) : (
           <>
-            {active === "combos" ? (
-              <div className="mt-5 flex flex-col gap-3">
-                <div className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-wider bg-accent/5 self-start px-3 py-1.5 rounded-full border border-accent/10">
-                  <Users className="h-3.5 w-3.5" />
-                  Serve até {p.serves} pessoas
-                </div>
-                <div className="flex flex-col gap-0.5">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-2xl font-black text-accent">
-                      R$ {p.pricePerPerson?.toFixed(2).replace('.', ',')}
-                    </span>
-                    <span className="text-xs font-bold text-accent/70 uppercase">por pessoa</span>
-                  </div>
-                  <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1">
-                    Toque para ver detalhes e montar
-                  </span>
-                </div>
-              </div>
-            ) : (
-              <div className="mt-5 flex flex-col gap-3">
-                {p.requiredSizes && (
-                  <div className="flex flex-col gap-3">
-                    {p.requiredSizes.map((size) => (
-                      <div key={size.id} className="flex flex-col gap-1 rounded-xl bg-secondary/30 p-3 border border-border/40">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-bold text-foreground">
-                            {size.name} • Serve {size.serves} pessoas
+            <div className="mt-5 flex flex-col gap-3">
+              {p.requiredSizes && (
+                <div className="flex flex-col gap-3">
+                  {p.requiredSizes.map((size) => (
+                    <div key={size.id} className="flex flex-col gap-1 rounded-xl bg-secondary/30 p-3 border border-border/40">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-bold text-foreground">
+                          {size.name} • Serve {size.serves} pessoas
+                        </span>
+                        {size.consumption && (
+                          <span className="text-[10px] font-bold text-accent uppercase tracking-wider bg-accent/10 px-2 py-0.5 rounded">
+                            {size.consumption} por pessoa
                           </span>
-                          {size.consumption && (
-                            <span className="text-[10px] font-bold text-accent uppercase tracking-wider bg-accent/10 px-2 py-0.5 rounded">
-                              {size.consumption} por pessoa
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex items-center gap-1">
-                          <span className="text-base font-black text-primary">
-                            R$ {size.pricePerPerson?.toFixed(2).replace('.', ',')}
-                          </span>
-                          <span className="text-xs font-semibold text-muted-foreground">
-                            por pessoa
-                          </span>
-                        </div>
+                        )}
                       </div>
-                    ))}
-                  </div>
-                )}
-                {!p.requiredSizes && (
-                  <span className="font-sans font-bold text-muted-foreground/80 text-base">
-                    {p.price}
-                  </span>
-                )}
-              </div>
-            )}
+                      <div className="flex items-center gap-1">
+                        <span className="text-base font-black text-primary">
+                          R$ {size.pricePerPerson?.toFixed(2).replace('.', ',')}
+                        </span>
+                        <span className="text-xs font-semibold text-muted-foreground">
+                          por pessoa
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {!p.requiredSizes && (
+                <span className="font-sans font-bold text-muted-foreground/80 text-base">
+                  {p.price}
+                </span>
+              )}
+            </div>
 
             <div className="mt-auto pt-6 flex items-center justify-between border-t border-border/20 mt-6">
               {active === "monte" && (
@@ -169,24 +154,15 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
               )}
               
               <button 
-                disabled={active === "combos" && hasCombo}
                 onClick={(e) => {
                   e.stopPropagation();
                   onOpenModal(p);
                 }}
-                className={`flex w-full items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-bold transition-all duration-300 active:scale-95 ${
-                  active === "combos" && hasCombo
-                    ? "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
-                    : "bg-gradient-primary text-primary-foreground shadow-wine hover:scale-[1.02]"
-                }`}
+                className="flex w-full items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-bold bg-gradient-primary text-primary-foreground shadow-wine hover:scale-[1.02] transition-all duration-300 active:scale-95"
                 aria-label={`Ver ${p.name}`}
               >
-                {active === "combos" ? (hasCombo ? "Já escolhido" : "Monte do seu jeito") : (
-                  <>
-                    <Plus className="h-4 w-4" />
-                    Adicionar ao Pedido
-                  </>
-                )}
+                <Plus className="h-4 w-4" />
+                Adicionar ao Pedido
               </button>
             </div>
           </>
