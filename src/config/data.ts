@@ -20,6 +20,9 @@ export type ProductSizeOption = {
   name: string;
   price: string;
   priceValue: number;
+  serves?: number;
+  pricePerPerson?: number;
+  consumption?: string;
 };
 
 export type Product = {
@@ -196,7 +199,7 @@ export const menuData = {
       name: "Arroz de Salmão",
       price: "R$ 300,00",
       priceValue: 300,
-      desc: "Arroz soltinho cozido com lascas de salmão fresco e temperos finos.",
+      desc: "Arroz soltinho cozido with lascas de salmão fresco e temperos finos.",
       image: arrozSalmaoImg,
       requiredSizes: [
         { id: "sz1", name: "2kg", price: "R$ 300,00", priceValue: 300, serves: 6, pricePerPerson: 50.00, consumption: "+300g" },
@@ -238,10 +241,106 @@ export const menuData = {
       ]
     },
   ] as Product[],
+
+  combosSetePessoas: [
+    {
+      id: "7-1",
+      name: "Menu Cuidado de Mãe",
+      price: "R$ 650,00",
+      priceValue: 650,
+      desc: "O sabor caseiro elevado ao nível premium com nosso frango à parmegiana.",
+      image: "/imagens_cardapio/cardapio1.jpeg",
+      serves: 7,
+      deposit: 85,
+      pricePerPerson: 92.86,
+      badge: "Mais pedido",
+      includedItems: [
+        "Frango à Parmegiana (1 kg)",
+        "Salpicão (1 kg)",
+        "Arroz Branco (1 kg)",
+      ],
+      requiredStarters: defaultStarters,
+      requiredDesserts: defaultDesserts,
+    },
+    {
+      id: "7-2",
+      name: "Menu Homenagem à Mãe",
+      price: "R$ 670,00",
+      priceValue: 670,
+      desc: "Uma explosão de cremosidade com camarões graúdos e queijos nobres.",
+      image: "/imagens_cardapio/cardapio2.jpeg",
+      serves: 7,
+      deposit: 70,
+      pricePerPerson: 95.71,
+      badge: "Melhor custo-benefício",
+      includedItems: [
+        "Camarão 4 Queijos (1 kg)",
+        "Salpicão (1 kg)",
+        "Arroz Branco (1 kg)",
+      ],
+      requiredStarters: defaultStarters,
+      requiredDesserts: defaultDesserts,
+    },
+    {
+      id: "7-3",
+      name: "Menu Mãe, Nossa Rainha",
+      price: "R$ 790,00",
+      priceValue: 790,
+      desc: "Sofisticação e sabor intenso com nosso filé mignon selecionado.",
+      image: "/imagens_cardapio/cardapio3.jpeg",
+      serves: 7,
+      deposit: 75,
+      pricePerPerson: 112.86,
+      includedItems: [
+        "Filé ao Molho Madeira (1 kg)",
+        "Salpicão (1 kg)",
+        "Arroz de Queijo (1 kg)",
+      ],
+      requiredStarters: defaultStarters,
+      requiredDesserts: defaultDesserts,
+    },
+    {
+      id: "7-4",
+      name: "Mãe, Porto Seguro",
+      price: "R$ 750,00",
+      priceValue: 750,
+      desc: "O clássico perfeito para reunir a família com o melhor do bacalhau.",
+      image: "/imagens_cardapio/cardapio4.jpeg",
+      serves: 7,
+      deposit: 75,
+      pricePerPerson: 107.14,
+      includedItems: [
+        "Bacalhau Gratinado (1 kg)",
+        "Salpicão (1 kg)",
+        "Arroz Branco (1 kg)",
+      ],
+      requiredStarters: defaultStarters,
+      requiredDesserts: defaultDesserts,
+    },
+    {
+      id: "7-5",
+      name: "Menu Tempero de Mãe",
+      price: "R$ 750,00",
+      priceValue: 750,
+      desc: "A união nobre da pescada amarela com o sofisticado arroz de salmão.",
+      image: "/imagens_cardapio/cardapio5.jpeg",
+      serves: 7,
+      deposit: 75,
+      pricePerPerson: 107.14,
+      includedItems: [
+        "Pescada Amarela (1 kg)",
+        "Salpicão (1 kg)",
+        "Arroz de Salmão (1 kg)",
+      ],
+      requiredStarters: defaultStarters,
+      requiredDesserts: defaultDesserts,
+    },
+  ] as (Product & { badge?: string })[],
 };
 
 export const menuTabs = [
-  { id: "combos", label: "CARDÁPIO ESPECIAL" },
+  { id: "cardapio_7_pessoas", label: "CARDÁPIO 7 PESSOAS" },
+  { id: "combos", label: "CARDÁPIO 15 PESSOAS" },
   { id: "monte", label: "PEDIDO AVULSO" },
 ] as const;
 

@@ -8,6 +8,7 @@ const CartDrawer = () => {
   const {
     items,
     total,
+    depositTotal,
     hasCombo,
     isCartOpen,
     setIsCartOpen,
@@ -25,7 +26,7 @@ const CartDrawer = () => {
   const [complemento, setComplemento] = useState("");
 
   const deliveryFee = orderType === "entrega" ? 30 : 0;
-  const depositFee = hasCombo ? 110 : 0;
+  const depositFee = depositTotal;
   const finalTotal = total + deliveryFee + depositFee;
 
   // Prevent background scrolling when cart is open
@@ -111,8 +112,8 @@ const CartDrawer = () => {
     message += `VALORES:\n\n`;
     message += `Subtotal dos itens: R$ ${total.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
     
-    if (depositFee > 0) {
-      message += `Caução (Reembolsável): R$ ${depositFee.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
+    if (depositTotal > 0) {
+      message += `Caução (Reembolsável): R$ ${depositTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}\n`;
     }
     
     if (orderType === "entrega") {

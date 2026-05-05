@@ -15,6 +15,7 @@ type CartContextType = {
   items: CartItem[];
   itemsCount: number;
   total: number;
+  depositTotal: number;
   hasCombo: boolean;
   addToCart: (product: Product, entrada?: ProductOption, sobremesa?: ProductOption, tamanho?: ProductSizeOption) => void;
   removeFromCart: (cartItemId: string) => void;
@@ -53,6 +54,10 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   const total = items.reduce((acc, item) => {
     const itemPrice = item.tamanho ? item.tamanho.priceValue : item.product.priceValue;
     return acc + itemPrice * item.quantity;
+  }, 0);
+
+  const depositTotal = items.reduce((acc, item) => {
+    return acc + (item.product.deposit || 0) * item.quantity;
   }, 0);
 
   const hasCombo = items.some((item) => !!item.product.serves);
@@ -148,6 +153,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
         items,
         itemsCount,
         total,
+        depositTotal,
         hasCombo,
         addToCart,
         removeFromCart,
