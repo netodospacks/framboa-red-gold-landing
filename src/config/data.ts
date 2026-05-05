@@ -253,7 +253,6 @@ export const menuData = {
       serves: 7,
       deposit: 85,
       pricePerPerson: 92.86,
-      badge: "Mais pedido",
       includedItems: [
         "Frango à Parmegiana (1 kg)",
         "Salpicão (1 kg)",
@@ -272,7 +271,6 @@ export const menuData = {
       serves: 7,
       deposit: 70,
       pricePerPerson: 95.71,
-      badge: "Melhor custo-benefício",
       includedItems: [
         "Camarão 4 Queijos (1 kg)",
         "Salpicão (1 kg)",
@@ -309,6 +307,7 @@ export const menuData = {
       serves: 7,
       deposit: 75,
       pricePerPerson: 107.14,
+      badge: "Mais pedido",
       includedItems: [
         "Bacalhau Gratinado (1 kg)",
         "Salpicão (1 kg)",
