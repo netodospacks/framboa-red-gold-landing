@@ -38,7 +38,6 @@ const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badg
             <h3 className="font-display font-bold text-foreground text-xl md:text-2xl leading-tight transition-colors group-hover:text-primary">{p.name}</h3>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
           </div>
-          </div>
         </div>
         
         {p.includedItems && (
