@@ -1,5 +1,5 @@
 import { ShoppingCart, MoreHorizontal, X, ChevronRight } from "lucide-react";
-import logo from "@/assets/framboa-logo.png";
+import logo from "/logo/Framboá-02.png";
 import { useCart } from "@/hooks/use-cart";
 import { useState } from "react";
 import { menuTabs } from "@/config/data";
@@ -34,7 +34,7 @@ const Header = () => {
 
         {/* CENTRO: Logo no meio */}
         <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none">
-          <img src={logo} alt="Logo Framboá" className="h-14 md:h-16 w-auto object-contain" />
+          <img src={logo} alt="Logo Framboá" className="h-20 md:h-24 w-auto object-contain" />
         </div>
 
         {/* DIREITA: Carrinho */}

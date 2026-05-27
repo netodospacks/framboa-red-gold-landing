@@ -1,27 +1,46 @@
-import Header from "@/components/framboa/Header";
-import Hero from "@/components/framboa/Hero";
-import Countdown from "@/components/framboa/Countdown";
-import Awards from "@/components/framboa/Awards";
-import Menu from "@/components/framboa/Menu";
-import Footer from "@/components/framboa/Footer";
-import WhatsAppButton from "@/components/framboa/WhatsAppButton";
-import FloatingCart from "@/components/framboa/FloatingCart";
-import CartDrawer from "@/components/framboa/CartDrawer";
+import { useEffect } from "react";
+import Navbar from "@/components/halia/Navbar";
+import Hero from "@/components/halia/Hero";
+import Story from "@/components/halia/Story";
+import InstagramFeed from "@/components/halia/InstagramFeed";
+import Footer from "@/components/halia/Footer";
 
 const Index = () => {
+  useEffect(() => {
+    const revealElements = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("active");
+          } else {
+            entry.target.classList.remove("active");
+          }
+        });
+      },
+      {
+        threshold: 0.08,
+        rootMargin: "0px 0px -80px 0px",
+      }
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+
+    return () => {
+      revealElements.forEach((el) => observer.unobserve(el));
+    };
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-cream">
-      <Header />
-      <main className="pb-24">
+    <div className="min-h-screen bg-white selection:bg-gold/30 selection:text-black">
+      <Navbar />
+      <main>
         <Hero />
-        <Countdown />
-        <Awards />
-        <Menu />
+        <Story />
+        <InstagramFeed />
       </main>
       <Footer />
-      <WhatsAppButton />
-      <FloatingCart />
-      <CartDrawer />
     </div>
   );
 };

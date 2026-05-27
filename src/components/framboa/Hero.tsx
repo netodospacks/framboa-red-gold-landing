@@ -1,5 +1,5 @@
 import heroImage from "@/assets/hero-family-original.jpg";
-import logo from "@/assets/framboa-logo.png";
+import logo from "/logo/Framboá-02.png";
 
 const Hero = () => {
   return (
