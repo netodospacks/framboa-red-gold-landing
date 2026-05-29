@@ -1,5 +1,5 @@
 import { ShoppingCart, MoreHorizontal, X, ChevronRight } from "lucide-react";
-import logo from "/logo/Framboá-02.png";
+import logo from "/logo/framboa-logo.png";
 import { useCart } from "@/hooks/use-cart";
 import { useState } from "react";
 import { menuTabs } from "@/config/data";

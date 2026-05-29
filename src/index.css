@@ -120,6 +120,7 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
+    touch-action: pan-y;
   }
 
   .font-display {

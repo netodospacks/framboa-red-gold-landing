@@ -10,20 +10,19 @@ const calc = (target: Date) => {
   return { d, h, m, s };
 };
 
-const nextMothersDay = () => {
-  // Brazil: 2nd Sunday of May
+const nextValentinesDay = () => {
+  // Brazil: June 12th
   const now = new Date();
-  for (let year = now.getFullYear(); year <= now.getFullYear() + 1; year++) {
-    const may = new Date(year, 4, 1);
-    const firstSunday = 1 + ((7 - may.getDay()) % 7);
-    const target = new Date(year, 4, firstSunday + 7, 12, 0, 0);
-    if (target.getTime() > now.getTime()) return target;
+  const year = now.getFullYear();
+  let target = new Date(year, 5, 12, 12, 0, 0); // Month 5 is June in JS (0-indexed)
+  if (target.getTime() < now.getTime()) {
+    target = new Date(year + 1, 5, 12, 12, 0, 0);
   }
-  return new Date(now.getFullYear() + 1, 4, 12, 12, 0, 0);
+  return target;
 };
 
 const Countdown = () => {
-  const [target] = useState(nextMothersDay);
+  const [target] = useState(nextValentinesDay);
   const [time, setTime] = useState(() => calc(target));
 
   useEffect(() => {
@@ -43,7 +42,7 @@ const Countdown = () => {
       <div className="mx-auto max-w-sm rounded-2xl bg-white p-5 shadow-md border border-accent/20 text-center flex flex-col items-center">
         <div className="flex items-center gap-2 mb-3">
           <Heart className="h-4 w-4 text-primary fill-primary" />
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Especial Dia das Mães</span>
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-primary">Especial Dia dos Namorados</span>
         </div>
         
         <div className="grid grid-cols-4 gap-2 w-full">

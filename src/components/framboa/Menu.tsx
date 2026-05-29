@@ -1,255 +1,274 @@
-import { useState } from "react";
-import { Plus, Users, AlertCircle } from "lucide-react";
-import { useCart } from "@/hooks/use-cart";
-import { menuData, menuTabs, Product } from "@/config/data";
-import ProductModal from "./ProductModal";
+import { useState, useEffect } from "react";
+import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-const ProductCard = ({ p, onOpenModal, active, hasCombo }: { p: Product & { badge?: string }; onOpenModal: (p: Product) => void; active: string; hasCombo: boolean }) => {
-  const isSevenPeople = active === "cardapio_7_pessoas";
-  const whatsappLink = `https://wa.me/5583982309183?text=${encodeURIComponent(`Olá! Tenho interesse neste cardápio para 7 pessoas: ${p.name}`)}`;
-
-  return (
-    <article className="group flex flex-col gap-5 p-5 md:p-7 border-b border-border/40 bg-card hover:bg-secondary/5 transition-all duration-300 last:border-b-0 relative cursor-pointer" onClick={() => onOpenModal(p)}>
-      {(isSevenPeople || active === "combos") && (
-        <div className={`relative w-full overflow-hidden rounded-2xl shadow-md ring-1 ring-border/30 transition-all duration-500 ${
-          isSevenPeople ? "h-56 md:h-72" : "h-48 md:h-64"
-        }`}>
-          <img
-            src={p.image}
-            alt={p.name}
-            loading="lazy"
-            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
-          
-          {p.badge && (
-            <div className="absolute top-4 right-4 z-10">
-              <span className="bg-accent text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full shadow-lg animate-pulse-subtle">
-                {p.badge}
-              </span>
-            </div>
-          )}
-        </div>
-      )}
-
-      <div className="flex flex-1 flex-col">
-        <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <h3 className="font-display font-bold text-foreground text-xl md:text-2xl leading-tight transition-colors group-hover:text-primary">{p.name}</h3>
-            <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{p.desc}</p>
-          </div>
-        </div>
-        
-        {p.includedItems && (
-          <div className="mt-4 flex flex-col gap-1.5">
-            <span className="text-[11px] font-bold text-muted-foreground/70 uppercase tracking-wider">O que está incluso:</span>
-            <ul className="text-[13px] text-muted-foreground leading-snug italic space-y-1">
-              {p.includedItems.map((item, idx) => (
-                <li key={idx} className="flex items-center gap-2">
-                  <div className="h-1 w-1 rounded-full bg-primary/40" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        
-        {(isSevenPeople || active === "combos") ? (
-          <div className="mt-5 flex flex-col gap-4">
-            <div className="flex items-center gap-2 text-xs font-bold text-accent uppercase tracking-wider bg-accent/5 self-start px-3 py-1.5 rounded-full border border-accent/10">
-              <Users className="h-3.5 w-3.5" />
-              Serve até {isSevenPeople ? "07" : p.serves} pessoas
-            </div>
-            
-            <div className="flex flex-col gap-0.5">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-black text-accent drop-shadow-sm">
-                  R$ {p.pricePerPerson?.toFixed(2).replace('.', ',')}
-                </span>
-                <span className="text-sm font-bold text-accent/70 uppercase tracking-tight">por pessoa</span>
-              </div>
-              <span className="text-[10px] text-muted-foreground font-bold uppercase tracking-widest mt-1 flex items-center gap-1.5">
-                <div className="h-px w-4 bg-border" />
-                Toque para ver detalhes e montar
-              </span>
-            </div>
-
-            <div className="mt-2 flex flex-wrap gap-3">
-              <button 
-                disabled={active === "combos" && hasCombo}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpenModal(p);
-                }}
-                className={`flex-1 rounded-full px-6 py-3.5 text-sm font-bold transition-all duration-300 active:scale-95 ${
-                  active === "combos" && hasCombo
-                    ? "bg-muted text-muted-foreground cursor-not-allowed opacity-60"
-                    : "bg-gradient-primary text-primary-foreground shadow-card shadow-wine hover:scale-[1.02]"
-                }`}
-              >
-                {active === "combos" && hasCombo ? "Já escolhido" : "Quero esse cardápio"}
-              </button>
-              <a 
-                href={`https://wa.me/5583982309183?text=${encodeURIComponent(`Olá! Tenho interesse neste cardápio para ${isSevenPeople ? "7" : "15"} pessoas: ${p.name}`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                className="flex-1 text-center border border-primary/20 bg-primary/5 text-primary rounded-full px-6 py-3.5 text-sm font-bold hover:bg-primary/10 transition-all duration-300 active:scale-95"
-              >
-                WhatsApp
-              </a>
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="mt-5 flex flex-col gap-3">
-              {p.requiredSizes && (
-                <div className="flex flex-col gap-3">
-                  {p.requiredSizes.map((size) => (
-                    <div key={size.id} className="flex flex-col gap-1 rounded-xl bg-secondary/30 p-3 border border-border/40">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-bold text-foreground">
-                          {size.name} • Serve {size.serves} pessoas
-                        </span>
-                        {size.consumption && (
-                          <span className="text-[10px] font-bold text-accent uppercase tracking-wider bg-accent/10 px-2 py-0.5 rounded">
-                            {size.consumption} por pessoa
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <span className="text-base font-black text-primary">
-                          R$ {size.pricePerPerson?.toFixed(2).replace('.', ',')}
-                        </span>
-                        <span className="text-xs font-semibold text-muted-foreground">
-                          por pessoa
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              {!p.requiredSizes && (
-                <span className="font-sans font-bold text-muted-foreground/80 text-base">
-                  {p.price}
-                </span>
-              )}
-            </div>
-
-            <div className="mt-auto pt-6 flex items-center justify-between border-t border-border/20 mt-6">
-              {active === "monte" && (
-                <span className="text-[11px] font-bold uppercase tracking-widest text-primary/70">
-                  {p.requiredSizes ? "Escolha o tamanho" : "Adicionar ao pedido"}
-                </span>
-              )}
-              
-              <button 
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onOpenModal(p);
-                }}
-                className="flex w-full items-center justify-center gap-1.5 rounded-full px-5 py-3 text-sm font-bold bg-gradient-primary text-primary-foreground shadow-wine hover:scale-[1.02] transition-all duration-300 active:scale-95"
-                aria-label={`Ver ${p.name}`}
-              >
-                <Plus className="h-4 w-4" />
-                Adicionar ao Pedido
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </article>
-  );
-};
+const DISH_IMAGES = [
+  "/pratos/1.jpeg",
+  "/pratos/2.jpeg",
+  "/pratos/3.jpeg",
+  "/pratos/4.jpeg",
+  "/pratos/5.jpeg"
+];
 
 const Menu = () => {
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const { addToCart, hasCombo, activeMenuTab, setActiveMenuTab } = useCart();
-  
-  const list = activeMenuTab === "combos" 
-    ? menuData.combos 
-    : activeMenuTab === "cardapio_7_pessoas" 
-    ? menuData.combosSetePessoas 
-    : menuData.monteSeu;
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [name, setName] = useState("");
+  const [time, setTime] = useState("");
+  const [currentDishIdx, setCurrentDishIdx] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentDishIdx((prev) => (prev + 1) % DISH_IMAGES.length);
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleCheckout = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !time) return;
+
+    const message = `Olá! Gostaria de encomendar o Menu Degustação Amor de Cinema.\n\n*Nome:* ${name}\n*Horário de Retirada:* ${time}\n\nEstou ciente de que a retirada é no dia 12 de Junho, a partir das 15h30min no Restaurante Framboá (Manaíra Shopping).`;
+    const whatsappUrl = `https://wa.me/5583982309183?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank");
+    setIsCheckoutOpen(false);
+  };
 
   return (
-    <section id="cardapio" className="mt-4 pb-8">
-      <div className="sticky top-16 z-30 bg-background/95 backdrop-blur-md border-b border-border/50 px-4 py-2.5 shadow-sm">
-        <div className="container px-0 mx-auto max-w-3xl overflow-x-auto no-scrollbar">
-          <div className="flex gap-3 min-w-max pb-1">
-            {menuTabs.map((t) => (
-              <button
-                key={t.id}
-                onClick={() => setActiveMenuTab(t.id)}
-                className={`rounded-full px-5 py-2 text-sm font-medium transition-smooth ${
-                  activeMenuTab === t.id
-                    ? "bg-primary text-primary-foreground shadow-wine"
-                    : "bg-secondary text-secondary-foreground hover:bg-secondary/80 hover:text-primary"
-                } ${t.id === "cardapio_7_pessoas" ? "animate-pulse-subtle ring-2 ring-primary/20" : ""}`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="container px-4 md:px-0 mx-auto max-w-3xl mt-8 mb-6 text-center">
-        <h2 className="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-accent">
-          Seleção Exclusiva
-        </h2>
-        <h3 className="font-display text-3xl md:text-4xl font-bold text-primary mt-1">
-          {activeMenuTab === "cardapio_7_pessoas" ? "CARDÁPIO 07 PESSOAS" : activeMenuTab === "combos" ? "CARDÁPIO 15 PESSOAS" : "PEDIDO AVULSO"}
-        </h3>
-        <p className="mt-2 text-sm md:text-base text-muted-foreground font-medium italic">
-          Ideal para reunir a família nesse Dia das Mães
-        </p>
-      </div>
-
-      <div className="container px-0 mx-auto max-w-3xl bg-card rounded-t-xl md:rounded-t-2xl shadow-soft border border-border/40 overflow-hidden">
-        {/* Alertas de Limite */}
-        {activeMenuTab === "combos" || activeMenuTab === "cardapio_7_pessoas" ? (
-          <div className="bg-red-50 border-b border-red-100 px-5 py-3.5 flex items-center gap-3 animate-pulse-subtle">
-            <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-red-100 text-red-600">
-              <AlertCircle className="h-5 w-5" />
-            </div>
-            <p className="text-sm font-bold text-red-800">
-              ⚠️ Edição limitada: apenas 10 pedidos disponíveis
-            </p>
-          </div>
-        ) : (
-          <div className="flex flex-col">
-            <div className="bg-amber-50 border-b border-amber-100 px-5 py-3.5 flex items-center gap-3">
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-600">
-                <AlertCircle className="h-5 w-5" />
+    <>
+      <section id="cardapio" className="pb-16 relative z-20">
+        <div className="container mx-auto px-4 md:px-0 max-w-3xl">
+          <div className="relative overflow-hidden bg-[#fdfbf7] p-6 sm:p-12 md:p-16 rounded-[4px] shadow-[0_20px_60px_-10px_rgba(0,0,0,0.5),0_0_0_1px_rgba(212,175,55,0.15)] border border-[#d4af37]/25">
+            
+            {/* Inner decorative border */}
+            <div className="absolute inset-3 border border-[#d4af37]/30 pointer-events-none rounded-[2px] z-20" />
+            
+            {/* Content */}
+            <div className="relative z-10 px-2 sm:px-6">
+              <div className="text-center mb-10">
+                <h2 className="font-display text-2xl md:text-3xl text-[#8B0000] uppercase tracking-widest leading-relaxed">
+                  Menu Degustação<br />
+                  <span className="text-[#d4af37] text-3xl md:text-4xl">Em 5 Momentos</span>
+                </h2>
+                <div className="w-16 h-px bg-[#d4af37]/50 mx-auto mt-6" />
               </div>
-              <p className="text-sm font-bold text-amber-900">
-                ⚠️ Disponível para até 18 pedidos
-              </p>
+
+              <div className="space-y-5 font-serif text-[#2C3E50]/90 leading-relaxed text-sm md:text-base text-justify sm:text-left">
+                <p>
+                  Celebre o amor com uma experiência gastronômica exclusiva, criada pelo nosso chef José Tavares para o Dia dos Namorados. Inspirado em romances do cinema, este menu degustação é uma jornada sensorial em cinco momentos — cada prato conta uma história de sabores harmoniosos, técnicas refinada e ingredientes selecionados.
+                </p>
+                <p>
+                  Cada momento foi inspirado em um filme, onde o amor é o protagonista. Permita-se viver este momento, com um menu que guiará seus sentidos através dos seguintes momentos:
+                </p>
+
+                <div className="flex flex-col items-center gap-12 mt-14 max-w-xl mx-auto text-center relative">
+                  {/* Linha vertical decorativa (fina) no fundo */}
+                  <div className="absolute top-4 bottom-4 left-1/2 -translate-x-1/2 w-px bg-gradient-to-b from-transparent via-[#d4af37]/40 to-transparent pointer-events-none" />
+
+                  {/* Momento 1 */}
+                  <div className="relative bg-[#fdfbf7] px-6 py-2 z-10 group">
+                    <span className="block text-[9px] tracking-[0.35em] uppercase text-[#d4af37] font-bold mb-3 transition-colors group-hover:text-[#8B0000]">Primeiro Momento</span>
+                    <h4 className="font-serif text-[#8B0000] text-xl lg:text-2xl leading-snug mb-2">Caprese Elevada com Camarões</h4>
+                    <p className="text-sm lg:text-base text-[#2C3E50]/80 italic font-serif">Mussarela de búfala e presunto Parma</p>
+                    <div className="flex items-center justify-center gap-3 mt-4 opacity-70">
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                      <p className="text-[8px] tracking-[0.2em] uppercase text-[#2C3E50] font-sans">"Cartas para Julieta"</p>
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                    </div>
+                  </div>
+
+                  {/* Momento 2 */}
+                  <div className="relative bg-[#fdfbf7] px-6 py-2 z-10 group">
+                    <span className="block text-[9px] tracking-[0.35em] uppercase text-[#d4af37] font-bold mb-3 transition-colors group-hover:text-[#8B0000]">Segundo Momento</span>
+                    <h4 className="font-serif text-[#8B0000] text-xl lg:text-2xl leading-snug mb-2">Lagosta Dourada</h4>
+                    <p className="text-sm lg:text-base text-[#2C3E50]/80 italic font-serif">Com maçã e mel trufado</p>
+                    <div className="flex items-center justify-center gap-3 mt-4 opacity-70">
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                      <p className="text-[8px] tracking-[0.2em] uppercase text-[#2C3E50] font-sans">"Uma Linda Mulher"</p>
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                    </div>
+                  </div>
+
+                  {/* Momento 3 */}
+                  <div className="relative bg-[#fdfbf7] px-6 py-2 z-10 group">
+                    <span className="block text-[9px] tracking-[0.35em] uppercase text-[#d4af37] font-bold mb-3 transition-colors group-hover:text-[#8B0000]">Terceiro Momento</span>
+                    <h4 className="font-serif text-[#8B0000] text-xl lg:text-2xl leading-snug mb-2">Conchiglione de Ricota</h4>
+                    <p className="text-sm lg:text-base text-[#2C3E50]/80 italic font-serif">Damascos defumados e presunto Parma</p>
+                    <div className="flex items-center justify-center gap-3 mt-4 opacity-70">
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                      <p className="text-[8px] tracking-[0.2em] uppercase text-[#2C3E50] font-sans">"Diário de uma Paixão"</p>
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                    </div>
+                  </div>
+
+                  {/* Momento 4 */}
+                  <div className="relative bg-[#fdfbf7] px-6 py-2 z-10 group">
+                    <span className="block text-[9px] tracking-[0.35em] uppercase text-[#d4af37] font-bold mb-3 transition-colors group-hover:text-[#8B0000]">Quarto Momento</span>
+                    <h4 className="font-serif text-[#8B0000] text-xl lg:text-2xl leading-snug mb-2">Arroz Cremoso</h4>
+                    <p className="text-sm lg:text-base text-[#2C3E50]/80 italic font-serif">Ragu de costela e farofa cítrica</p>
+                    <div className="flex items-center justify-center gap-3 mt-4 opacity-70">
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                      <p className="text-[8px] tracking-[0.2em] uppercase text-[#2C3E50] font-sans">"P.S. Eu Te Amo"</p>
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                    </div>
+                  </div>
+
+                  {/* Momento 5 */}
+                  <div className="relative bg-[#fdfbf7] px-6 py-2 z-10 group">
+                    <span className="block text-[9px] tracking-[0.35em] uppercase text-[#d4af37] font-bold mb-3 transition-colors group-hover:text-[#8B0000]">Quinto Momento</span>
+                    <h4 className="font-serif text-[#8B0000] text-xl lg:text-2xl leading-snug mb-2">Mousse de Chocolate</h4>
+                    <p className="text-sm lg:text-base text-[#2C3E50]/80 italic font-serif">Com baunilha e crumble de castanhas</p>
+                    <div className="flex items-center justify-center gap-3 mt-4 opacity-70">
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                      <p className="text-[8px] tracking-[0.2em] uppercase text-[#2C3E50] font-sans">"Chocolate"</p>
+                      <div className="h-px w-6 bg-[#d4af37]/50" />
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-center font-bold text-[#8B0000] italic pt-6">
+                  Garanta o seu menu e surpreenda quem você ama com um jantar digno de cinema.
+                </p>
+              </div>
+
+              {/* Footer Action */}
+              <div className="mt-12 text-center">
+                <div className="w-16 h-px bg-[#d4af37]/50 mx-auto mb-6" />
+                
+                {/* Promotional Badge */}
+                <div className="inline-block bg-[#d4af37] text-white text-[9px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-[2px] font-bold mb-4 shadow-md">
+                  Valor promocional até 4 de Junho
+                </div>
+                
+                <div className="mb-10 flex flex-col items-center justify-center">
+                  <span className="block text-[#2C3E50]/60 text-[10px] tracking-widest uppercase mb-1">Valor do Menu Degustação (Casal)</span>
+                  <div className="flex items-center gap-3 mt-1">
+                    <span className="text-[#2C3E50]/40 line-through text-lg md:text-xl font-serif">R$ 309,90</span>
+                    <span className="font-serif text-3xl md:text-5xl text-[#8B0000] font-bold">R$ 259,90</span>
+                  </div>
+                </div>
+
+                <button 
+                  onClick={() => setIsCheckoutOpen(true)}
+                  className="inline-flex items-center justify-center px-8 py-4 mb-10 w-full sm:w-auto bg-[#8B0000] text-white rounded-[2px] text-xs font-bold uppercase tracking-[0.2em] transition-all hover:bg-[#600000] hover:scale-[1.02] shadow-[0_4px_14px_rgba(139,0,0,0.4)]"
+                >
+                  Garantir Meu Menu
+                </button>
+
+                {/* Luxury Horizontal Image Row */}
+                <div className="w-full mb-4 relative">
+                  {/* Fades nas bordas para dar efeito de luxo */}
+                  <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-[#fdfbf7] to-transparent z-20 pointer-events-none" />
+                  <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-[#fdfbf7] to-transparent z-20 pointer-events-none" />
+                  
+                  <div className="w-full overflow-x-auto pb-8 pt-4 hide-scrollbar snap-x snap-mandatory flex gap-4 px-4 scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                    {DISH_IMAGES.map((src, idx) => (
+                      <div 
+                        key={idx} 
+                        className="relative w-40 md:w-48 aspect-[3/4] rounded-lg overflow-hidden shadow-[0_15px_35px_-5px_rgba(0,0,0,0.4)] border border-[#d4af37]/40 snap-center shrink-0 group transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-5px_rgba(139,0,0,0.4)]"
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10 pointer-events-none" />
+                        <img 
+                          src={src} 
+                          alt={`Detalhe do Prato ${idx + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
-            <div className="bg-white/50 px-5 py-2 border-b border-border/30">
-              <p className="text-[11px] uppercase tracking-wider font-semibold text-muted-foreground flex items-center gap-1.5">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
-                Limite de até 2 unidades por item
-              </p>
-            </div>
+
           </div>
-        )}
-
-        <div className="flex flex-col">
-          {list.map((p) => (
-            <ProductCard key={p.id} p={p} onOpenModal={setSelectedProduct} active={activeMenuTab} hasCombo={hasCombo} />
-          ))}
         </div>
-      </div>
+      </section>
 
-      <ProductModal
-        product={selectedProduct}
-        isOpen={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onAddToCart={addToCart}
-      />
-    </section>
+      {/* Checkout Modal */}
+      {isCheckoutOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+          <div className="relative bg-[#fdfbf7] w-full max-w-md rounded-[4px] shadow-2xl border border-[#d4af37]/30 p-6 md:p-8">
+            
+            <button 
+              onClick={() => setIsCheckoutOpen(false)}
+              className="absolute top-4 right-4 text-[#2C3E50]/40 hover:text-[#8B0000] transition-colors"
+            >
+              <X size={20} />
+            </button>
+
+            <div className="text-center mb-8">
+              <span className="block text-[#d4af37] tracking-[0.25em] text-[10px] font-bold uppercase mb-2">Finalizar Reserva</span>
+              <h3 className="font-serif text-3xl text-[#8B0000] mb-2">Amor de Cinema</h3>
+              <p className="text-sm font-sans text-[#2C3E50]/60 uppercase tracking-widest">
+                Menu Degustação em 5 Momentos
+              </p>
+            </div>
+
+            <div className="bg-gradient-to-r from-transparent via-[#d4af37]/10 to-transparent border-y border-[#d4af37]/20 py-4 mb-8 text-xs text-[#8B0000]/80 font-sans tracking-wide text-center uppercase">
+              Retirada dia <strong>12 de Junho</strong> <br /> a partir das <strong>15h30min</strong> <br />
+              <span className="text-[9px] text-[#2C3E50]/50 mt-1 block">Restaurante Framboá (Manaíra Shopping)</span>
+            </div>
+
+            <form onSubmit={handleCheckout} className="space-y-5">
+              <div className="relative">
+                <label className="block text-[9px] tracking-[0.2em] uppercase text-[#2C3E50]/60 font-bold mb-2 ml-1">
+                  Seu Nome Completo
+                </label>
+                <input 
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="w-full bg-transparent border-b-2 border-[#d4af37]/30 px-2 py-2 text-sm text-[#2C3E50] focus:outline-none focus:border-[#8B0000] transition-colors font-serif placeholder:text-[#2C3E50]/30"
+                  placeholder="Como devemos lhe chamar?"
+                />
+              </div>
+
+              <div className="relative">
+                <label className="block text-[9px] tracking-[0.2em] uppercase text-[#2C3E50]/60 font-bold mb-2 ml-1">
+                  Horário de Retirada (A partir das 15h30)
+                </label>
+                <select 
+                  required
+                  value={time}
+                  onChange={(e) => setTime(e.target.value)}
+                  className="w-full bg-transparent border-b-2 border-[#d4af37]/30 px-2 py-2 text-sm text-[#2C3E50] focus:outline-none focus:border-[#8B0000] transition-colors appearance-none font-serif cursor-pointer"
+                >
+                  <option value="" disabled>Selecione o horário</option>
+                  <option value="15:30">15:30</option>
+                  <option value="16:00">16:00</option>
+                  <option value="16:30">16:30</option>
+                  <option value="17:00">17:00</option>
+                  <option value="17:30">17:30</option>
+                  <option value="18:00">18:00</option>
+                  <option value="18:30">18:30</option>
+                  <option value="19:00">19:00</option>
+                  <option value="19:30">19:30</option>
+                  <option value="20:00">20:00</option>
+                  <option value="20:30">20:30</option>
+                  <option value="21:00">21:00</option>
+                  <option value="21:30">21:30</option>
+                </select>
+                <div className="absolute right-2 bottom-3 pointer-events-none text-[#d4af37]">
+                  ▼
+                </div>
+              </div>
+
+              <div className="pt-6">
+                <button 
+                  type="submit"
+                  className="w-full relative overflow-hidden group bg-[#128C7E] text-white py-4 rounded-[2px] text-xs font-bold uppercase tracking-[0.2em] transition-all shadow-[0_4px_20px_rgba(18,140,126,0.3)] hover:shadow-[0_6px_25px_rgba(18,140,126,0.4)] hover:-translate-y-0.5"
+                >
+                  <span className="relative z-10 flex items-center justify-center gap-2">
+                    Reservar via WhatsApp
+                  </span>
+                  <div className="absolute inset-0 h-full w-full bg-white/20 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out" />
+                </button>
+              </div>
+            </form>
+            
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

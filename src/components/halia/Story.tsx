@@ -1,53 +1,89 @@
 import { useState, useRef, useEffect } from "react";
-import { Volume2, VolumeX, Trophy } from "lucide-react";
+import { Volume2, VolumeX, ChevronLeft, ChevronRight } from "lucide-react";
+
+const AWARDS = [
+  {
+    tag: "Nossa Conquista · Abrasel 2024",
+    title: "Menina Brejeira: o sabor que conquistou o Brasil",
+    event: "Melhor Restaurante a Quilo do Brasil · 2024",
+    description: "Em 2024, o Framboá foi reconhecido como o melhor restaurante a quilo do Brasil no concurso \"O Quilo é Nosso\", realizado pela Abrasel — um marco histórico para a gastronomia paraibana.",
+    detail: "O prato campeão, \"Menina Brejeira\", assinado pelo Chef José Tavares, nasceu da valorização dos ingredientes locais e da busca por traduzir o sabor da Paraíba em uma criação que representa nossa essência: respeito ao produto, cuidado no preparo e amor pela cozinha.",
+    extraDetail: "A conquista reforça não apenas a qualidade do nosso trabalho, mas também a força da culinária regional quando é tratada com dedicação e sensibilidade. Mais do que um prêmio, esse reconhecimento simboliza uma história construída ao longo de décadas, feita de entrega diária, paixão pelo que fazemos e da confiança de cada cliente que faz parte dessa caminhada.",
+    images: [
+      "/premia%C3%A7%C3%A3o/meninabrejeira_foto1.jpeg",
+      "/premia%C3%A7%C3%A3o/meninabreiejira_foto2.jpeg",
+    ],
+  },
+  {
+    tag: "Nossa Conquista · Abrasel 2025",
+    title: "Sertão Molhado: o bicampeonato",
+    event: "Top 10 do Brasil no concurso O Quilo é Nosso · 2025",
+    description: "Em 2025, o Framboá celebrou o bicampeonato paraibano e garantiu seu lugar no cobiçado Top 10 nacional do concurso \"O Quilo é Nosso\", da Abrasel. Essa nova conquista reafirma nosso compromisso contínuo com a excelência e consolida o nosso papel de destaque na valorização da gastronomia da Paraíba.",
+    detail: "A estrela dessa vitória foi o “Sertão Molhado”, um prato que carrega a força e a riqueza inconfundíveis do Nordeste. Criado como uma homenagem aos sabores da nossa terra e à transposição do Rio São Francisco — que trouxe vida e esperança para tantas regiões —, a receita traz um purê de banana-da-terra defumado com carne de sol, feijão verde e milho assado, tudo temperado com um refogado especial e finalizado com língua de sol ao molho demi-glace.",
+    extraDetail: "Esse bicampeonato e a posição entre os melhores do Brasil provam que a nossa paixão por inovar, sem perder as raízes, continua rendendo frutos. Mais uma vez, celebramos não apenas os prêmios, mas a entrega diária da nossa equipe e a confiança de cada cliente que nos acompanha e acredita na força da nossa culinária regional.",
+    images: [
+      "/premia%C3%A7%C3%A3o/sertaomolhado_foto1.jpeg",
+      "/premia%C3%A7%C3%A3o/sertaomolhado_foto2.jpeg",
+    ],
+  },
+];
 
 const STORY_IMAGES = [
   {
     src: "/images/halia/historic_img1.png",
     alt: "Início da nossa história - Buffet nos anos 90",
-    caption: "Anos 90",
+    caption: "A Origem",
   },
   {
     src: "/images/halia/historic_img2.png",
     alt: "Pioneirismo do buffet self-service no shopping",
-    caption: "Inovação",
+    caption: "Anos 90",
   },
   {
     src: "/images/halia/historic_img3.png",
     alt: "Nosso buffet moderno hoje no Manaíra Shopping",
-    caption: "Hoje",
+    caption: "2010",
   },
 ];
 
-const Story = () => {
-  const [muted, setMuted] = useState(true);
-  const [showAudioPrompt, setShowAudioPrompt] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
 
-  // Try to unmute and play on first user interaction (browsers block audio autoplay)
+
+const TypewriterText = ({ text, delay = 0, speed = 15, trigger = "" }: { text: string; delay?: number; speed?: number; trigger?: string | number }) => {
+  const [displayedText, setDisplayedText] = useState("");
+
   useEffect(() => {
-    const enableAudio = () => {
-      const video = videoRef.current;
-      if (video) {
-        video.muted = false;
-        video.play().catch((err) => {
-          console.warn("Play failed on interaction:", err);
-        });
-        setMuted(false);
-        setShowAudioPrompt(false);
-      }
-      document.removeEventListener("click", enableAudio);
-      document.removeEventListener("touchstart", enableAudio);
+    let timeout: NodeJS.Timeout;
+    let index = 0;
+    
+    // Reset when trigger changes
+    setDisplayedText("");
+
+    const startTyping = () => {
+      timeout = setInterval(() => {
+        setDisplayedText(text.slice(0, index + 1));
+        index++;
+        if (index >= text.length) clearInterval(timeout);
+      }, speed);
     };
 
-    document.addEventListener("click", enableAudio, { once: true });
-    document.addEventListener("touchstart", enableAudio, { once: true });
+    if (delay > 0) {
+      setTimeout(startTyping, delay);
+    } else {
+      startTyping();
+    }
 
     return () => {
-      document.removeEventListener("click", enableAudio);
-      document.removeEventListener("touchstart", enableAudio);
+      clearInterval(timeout);
     };
-  }, []);
+  }, [text, speed, delay, trigger]);
+
+  return <span>{displayedText}</span>;
+};
+
+const Story = () => {
+  const [muted, setMuted] = useState(true);
+  const [awardIdx, setAwardIdx] = useState(0);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   // Programmatically trigger play on mount/load to guarantee it autoplays
   useEffect(() => {
@@ -56,7 +92,7 @@ const Story = () => {
       video.muted = muted;
       const startPlayback = () => {
         video.play().catch((err) => {
-          console.log("Auto-playback blocked, waiting for click/touch to play with audio:", err);
+          console.log("Auto-playback blocked:", err);
         });
       };
 
@@ -76,7 +112,6 @@ const Story = () => {
     if (videoRef.current) {
       videoRef.current.muted = !muted;
       setMuted((m) => !m);
-      setShowAudioPrompt(false);
     }
   };
 
@@ -179,7 +214,7 @@ const Story = () => {
               </div>
 
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400 flex items-end p-3">
-                <span className="text-white text-[9px] font-semibold tracking-[0.2em] uppercase">Nosso restaurante hoje</span>
+                <span className="text-white text-[9px] font-semibold tracking-[0.2em] uppercase">2010</span>
               </div>
               <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gold/80 scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
             </div>
@@ -200,34 +235,101 @@ const Story = () => {
           <div className="w-12 h-px bg-gold/40 mx-auto mt-6" />
         </div>
 
-        {/* ── Premiação / Nossa Conquista ── */}
-        <div className="mt-24 lg:mt-28 max-w-4xl mx-auto px-6 py-12 rounded-[8px] bg-gradient-cream border border-gold/10 shadow-soft flex flex-col md:flex-row items-center gap-10 lg:gap-14 reveal">
-          
-          {/* Left / Top: Trophy badge */}
-          <div className="flex flex-col items-center justify-center text-center p-6 bg-white/60 rounded-[4px] shadow-sm border border-gold/10 w-full md:w-auto md:min-w-[200px]">
-            <Trophy className="h-14 w-14 text-gold mb-3 animate-pulse-subtle" strokeWidth={1.5} />
-            <span className="text-[10px] font-bold tracking-[0.2em] uppercase text-black/40">Melhor do Brasil</span>
-            <span className="font-serif italic text-gold text-2xl mt-1">Abrasel 2024</span>
+        {/* ── Premiação / Carrossel de Conquistas ── */}
+        <div className="mt-24 lg:mt-28 max-w-5xl mx-auto reveal">
+          {/* Header com setas */}
+          <div className="flex items-center justify-between mb-6 px-1">
+            <div>
+              <span className="text-[9px] font-bold tracking-[0.3em] uppercase text-gold block mb-1">Nossas Conquistas</span>
+              <h3 className="font-display text-xl lg:text-2xl uppercase tracking-tight text-black">Premiações & Reconhecimentos</h3>
+            </div>
+            {AWARDS.length > 1 && (
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setAwardIdx(i => (i - 1 + AWARDS.length) % AWARDS.length)}
+                  className="w-9 h-9 rounded-full border border-black/15 flex items-center justify-center text-black/50 hover:border-gold hover:text-gold transition-colors duration-200"
+                  aria-label="Premiação anterior"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+                <span className="text-[10px] text-black/30 font-mono">{awardIdx + 1}/{AWARDS.length}</span>
+                <button
+                  onClick={() => setAwardIdx(i => (i + 1) % AWARDS.length)}
+                  className="w-9 h-9 rounded-full border border-black/15 flex items-center justify-center text-black/50 hover:border-gold hover:text-gold transition-colors duration-200"
+                  aria-label="Próxima premiação"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
           </div>
 
-          {/* Right / Body: Title and description */}
-          <div className="flex-1 text-center md:text-left">
-            <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold block mb-2">
-              Nossa Conquista
-            </span>
-            <h4 className="font-display text-2xl lg:text-3.5xl font-bold uppercase tracking-tight text-black leading-tight mb-4">
-              Menina Brejeira: o sabor que conquistou o Brasil
-            </h4>
-            <div className="space-y-4 text-black/70 text-sm lg:text-base font-sans leading-relaxed">
-              <p>
-                Em 2024, o Framboá foi reconhecido como o melhor restaurante a quilo do Brasil no concurso <strong className="font-bold text-black">“O Quilo é Nosso”</strong>, realizado pela Abrasel, um marco importante na nossa trajetória e um orgulho para a gastronomia paraibana.
+          {/* Slide atual */}
+          <div
+            key={awardIdx}
+            className="px-6 py-10 lg:py-14 rounded-[8px] bg-gradient-cream border border-gold/10 shadow-soft flex flex-col md:flex-row items-center gap-10 lg:gap-16"
+            style={{ animation: "fadeIn 0.4s ease" }}
+          >
+            {/* Left: Fotos */}
+            <div className="w-full md:w-5/12 flex flex-col gap-3 shrink-0 mx-auto md:mx-0">
+              <p className="text-[9px] tracking-[0.25em] uppercase text-black/40 font-sans text-center md:text-left">
+                {AWARDS[awardIdx].event}
               </p>
-              <p>
-                O prato campeão, <strong className="font-bold text-black">“Menina Brejeira”</strong>, assinado pelo Chef José Tavares, nasceu da valorização dos ingredientes locais e da busca por traduzir o sabor da Paraíba em uma criação que representa nossa essência: respeito ao produto, cuidado no preparo e amor pela cozinha.
-              </p>
-              <p>
-                A conquista reforça não apenas a qualidade do nosso trabalho, mas também a força da culinária regional quando é tratada com dedicação e sensibilidade. Mais do que um prêmio, esse reconhecimento simboliza uma história construída ao longo de décadas, feita de entrega diária, paixão pelo que fazemos e da confiança de cada cliente que faz parte dessa caminhada.
-              </p>
+              <div className={`grid gap-2 sm:gap-3 w-full ${AWARDS[awardIdx].images.length === 2 ? 'grid-cols-2' : 'grid-cols-3'}`}>
+                {AWARDS[awardIdx].images.map((src, i) => (
+                  <div key={i} className="aspect-[3/4] rounded-[4px] overflow-hidden shadow-sm">
+                    <img
+                      src={src}
+                      alt={AWARDS[awardIdx].event}
+                      className="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-105"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right: Texto */}
+            <div className="w-full md:w-7/12 text-center md:text-left">
+              <span className="text-[10px] font-bold tracking-[0.25em] uppercase text-gold block mb-2">
+                {AWARDS[awardIdx].tag}
+              </span>
+              <h4 className="font-display text-2xl lg:text-3xl xl:text-4xl font-bold uppercase tracking-tight text-black leading-[1.1] mb-5">
+                {AWARDS[awardIdx].title}
+              </h4>
+              <div className="space-y-4 text-black/70 text-sm lg:text-[15px] font-sans leading-relaxed min-h-[300px]">
+                <p>
+                  <TypewriterText text={AWARDS[awardIdx].description} trigger={awardIdx} speed={15} />
+                </p>
+                <p>
+                  <TypewriterText text={AWARDS[awardIdx].detail} trigger={awardIdx} delay={AWARDS[awardIdx].description.length * 15 + 200} speed={15} />
+                </p>
+                {AWARDS[awardIdx].extraDetail && (
+                  <p>
+                    <TypewriterText 
+                      text={AWARDS[awardIdx].extraDetail as string} 
+                      trigger={awardIdx} 
+                      delay={(AWARDS[awardIdx].description.length + AWARDS[awardIdx].detail.length) * 15 + 400} 
+                      speed={15} 
+                    />
+                  </p>
+                )}
+              </div>
+
+              {/* Dots indicator */}
+              {AWARDS.length > 1 && (
+                <div className="flex items-center gap-2 mt-8 justify-center md:justify-start">
+                  {AWARDS.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setAwardIdx(i)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        i === awardIdx ? "bg-gold w-6" : "w-2 bg-black/20 hover:bg-black/40"
+                      }`}
+                      aria-label={`Ir para premiação ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -246,7 +348,7 @@ const Story = () => {
 
           {/* Portrait video container */}
           <div
-            className="relative w-full max-w-[320px] sm:max-w-[360px] rounded-[6px] overflow-hidden bg-black"
+            className="relative w-full max-w-[320px] sm:max-w-[360px] rounded-[6px] overflow-hidden bg-black group"
             style={{ boxShadow: "0 24px 60px -16px rgba(0,0,0,0.35)" }}
           >
             <div className="relative w-full aspect-[9/16]">
@@ -264,38 +366,34 @@ const Story = () => {
                 Seu navegador não suporta vídeo HTML5.
               </video>
 
-              {/* Audio prompt overlay — shown until first interaction */}
-              {showAudioPrompt && (
-                <div
-                  onClick={toggleMute}
-                  className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-16 cursor-pointer"
-                >
-                  <div className="flex flex-col items-center gap-2 animate-bounce">
-                    <div className="flex items-center gap-2 bg-black/70 backdrop-blur-sm text-white text-[10px] font-semibold tracking-widest uppercase px-4 py-2 rounded-full border border-white/20">
-                      <VolumeX size={14} />
-                      <span>Toque para ativar o som</span>
-                    </div>
-                  </div>
-                </div>
-              )}
-
               {/* Mute/Unmute Button */}
               <button
                 onClick={toggleMute}
                 aria-label={muted ? "Ativar som" : "Mutar"}
                 className="
                   absolute bottom-4 right-4 z-10
-                  flex items-center justify-center
-                  w-10 h-10 rounded-full
-                  bg-black/60 hover:bg-black/80
+                  flex items-center gap-2
+                  px-4 py-2 rounded-full
+                  bg-black/70 hover:bg-black/90
                   backdrop-blur-sm
                   border border-white/20
                   text-white
                   transition-all duration-300
-                  hover:scale-110 active:scale-95
+                  hover:scale-105 active:scale-95
+                  shadow-[0_4px_20px_rgba(0,0,0,0.5)]
                 "
               >
-                {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                {muted ? (
+                  <>
+                    <VolumeX size={16} />
+                    <span className="text-[9px] font-bold tracking-widest uppercase">Ouvir</span>
+                  </>
+                ) : (
+                  <>
+                    <Volume2 size={16} />
+                    <span className="text-[9px] font-bold tracking-widest uppercase">Mudo</span>
+                  </>
+                )}
               </button>
             </div>
           </div>

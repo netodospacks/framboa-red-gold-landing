@@ -34,7 +34,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-white selection:bg-gold/30 selection:text-black">
-      <Navbar />
+      <Navbar hideLogoOnDesktop />
       <main>
         <Hero />
         <Story />

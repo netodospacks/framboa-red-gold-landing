@@ -1,11 +1,13 @@
 import { Instagram } from "lucide-react";
 
 const InstagramFeed = () => {
+  return null; // Ocultado a pedido do usuário
+  
   const images = [
-    { src: "/images/halia/halia_insta_1_1778790904538.png", url: "https://www.instagram.com/p/DC2TVduNc01/" },
-    { src: "/images/halia/halia_insta_2_1778791170834.png", url: "https://www.instagram.com/p/DQcobIcDP2P/" },
-    { src: "/images/halia/halia_insta_3_1778791206595.png", url: "https://www.instagram.com/p/DCz0tgFN14O/" },
-    { src: "/images/halia/halia_story_interior_1778790306848.png", url: "https://www.instagram.com/framboarestaurante" },
+    { src: "/images/halia/halia_insta_1_1778790904538.png", url: "https://www.instagram.com/reel/DF5_AMiNEz1/?igsh=aWNpaWVnZ3Fibnlv" },
+    { src: "/images/halia/halia_insta_2_1778791170834.png", url: "https://www.instagram.com/reel/DHJMieMOEJg/?igsh=MWp2am9zMnR6NWV3NQ==" },
+    { src: "/images/halia/halia_insta_3_1778791206595.png", url: "https://www.instagram.com/reel/DIlitgpqwVU/?igsh=MTMzbWE0M3BnMnNyeA==" },
+    { src: "/images/halia/halia_story_interior_1778790306848.png", url: "https://www.instagram.com/reel/DQU16l7kW0P/?igsh=MTFwdHRxdWFuZHk4OQ==" },
     { src: "/images/halia/halia_story_dish_1778790460696.png", url: "https://www.instagram.com/framboarestaurante" },
   ];
 

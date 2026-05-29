@@ -24,6 +24,9 @@ const Footer = () => {
         {/* Brand */}
         <div className="text-center mb-16 reveal reveal-delay-100">
           <h2 className="font-display text-3xl lg:text-4xl tracking-widest uppercase mb-2">Framboá</h2>
+          <p className="text-white/60 text-sm font-serif italic mb-6 max-w-md mx-auto">
+            Há 36 anos servindo o sabor do mundo do jeito da gente. Tradição, hospitalidade e excelência em cada prato.
+          </p>
           <div className="w-12 h-[1px] bg-gold mx-auto mb-8" />
           <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-16 text-white/50 font-sans text-xs tracking-widest uppercase">
             <div className="flex items-center justify-center gap-2">
@@ -32,23 +35,26 @@ const Footer = () => {
             </div>
             <div className="flex items-center justify-center gap-2">
               <Phone size={14} className="text-gold" />
-              <span>(83) 3246-5426</span>
+              <span>Das 10h às 22h</span>
             </div>
           </div>
         </div>
 
-        {/* Institutional Links */}
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-12 text-[10px] tracking-[0.2em] uppercase font-semibold text-white/30 reveal reveal-delay-200">
-          <a href="#" className="hover:text-white transition-colors">Artigos</a>
-          <a href="#" className="hover:text-white transition-colors">Direitos Autorais</a>
-          <a href="#" className="hover:text-white transition-colors">Carreiras</a>
-          <a href="#" className="hover:text-white transition-colors">Privacidade</a>
+        {/* Campanha Dia dos Namorados */}
+        <div className="text-center mb-12 max-w-2xl mx-auto reveal reveal-delay-200">
+          <h4 className="font-display text-lg tracking-widest uppercase text-gold mb-3">Campanha Dia dos Namorados</h4>
+          <p className="text-white/60 text-xs leading-relaxed mb-2">
+            Combos especiais válidos para reservas exclusivas no dia 12 de junho. Sujeito à disponibilidade. Não cumulativo com outras promoções.
+          </p>
+          <p className="text-white/40 text-[10px] uppercase tracking-widest">
+            Imagens meramente ilustrativas.
+          </p>
         </div>
 
         {/* Copyright */}
         <div className="text-center border-t border-white/10 pt-12 reveal reveal-delay-300">
           <p className="text-[10px] tracking-widest text-white/20 uppercase">
-            Restaurante Framboá © 2024. Todos os direitos reservados. <br className="md:hidden" />
+            Restaurante Framboá © {new Date().getFullYear()}. CNPJ 12.924.627/0001-18. Todos os direitos reservados. <br className="md:hidden" />
             Desenvolvido por Senior Dev
           </p>
         </div>

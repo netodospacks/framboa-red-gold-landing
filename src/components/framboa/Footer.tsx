@@ -29,9 +29,9 @@ const Footer = () => {
               </div>
 
               <div>
-                <h4 className="font-display text-lg font-semibold text-accent">Campanha Dia das Mães</h4>
+                <h4 className="font-display text-lg font-semibold text-accent">Campanha Dia dos Namorados</h4>
                 <p className="mt-4 text-sm text-primary-foreground/80">
-                  Combos especiais válidos para reservas até o segundo domingo de maio.
+                  Combos especiais válidos para reservas exclusivas no dia 12 de junho.
                   Sujeito à disponibilidade. Não cumulativo com outras promoções.
                 </p>
                 <p className="mt-3 text-xs text-primary-foreground/60">

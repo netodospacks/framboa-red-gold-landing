@@ -55,7 +55,7 @@ export const menuData = {
   combos: [
     {
       id: "1",
-      name: "MESA DE MÃE",
+      name: "AMOR INCONDICIONAL",
       price: "R$ 1.279,00",
       priceValue: 1279,
       desc: "Menu completo para até 15 pessoas, com clássicos irresistíveis.",
@@ -75,7 +75,7 @@ export const menuData = {
     },
     {
       id: "2",
-      name: "DOMINGO COM A MÃE",
+      name: "JANTAR DOS NAMORADOS",
       price: "R$ 1.379,00",
       priceValue: 1379,
       desc: "Menu especial com Bacalhau e Camarão para 15 pessoas.",
@@ -95,7 +95,7 @@ export const menuData = {
     },
     {
       id: "3",
-      name: "MÃE MERECE",
+      name: "AMOR SUPREMO",
       price: "R$ 1.479,00",
       priceValue: 1479,
       desc: "Sofisticação com Filé Mignon e Camarão para grandes encontros.",
@@ -115,7 +115,7 @@ export const menuData = {
     },
     {
       id: "4",
-      name: "DO JEITO QUE A MÃE FAZ",
+      name: "DO JEITO QUE O AMOR PEDE",
       price: "R$ 1.589,00",
       priceValue: 1589,
       desc: "O banquete supremo com Pescada e Camarão para 15 convidados.",
@@ -245,10 +245,10 @@ export const menuData = {
   combosSetePessoas: [
     {
       id: "7-4",
-      name: "Mãe, Porto Seguro",
+      name: "Amor, Porto Seguro",
       price: "R$ 750,00",
       priceValue: 750,
-      desc: "O clássico perfeito para reunir a família com o melhor do bacalhau.",
+      desc: "O clássico perfeito para reunir quem você ama com o melhor do bacalhau.",
       image: "/imagens_cardapio/cardapio4.jpeg",
       serves: 7,
       deposit: 75,
@@ -264,7 +264,7 @@ export const menuData = {
     },
     {
       id: "7-1",
-      name: "Menu Cuidado de Mãe",
+      name: "Menu Cuidado de Amor",
       price: "R$ 650,00",
       priceValue: 650,
       desc: "O sabor caseiro elevado ao nível premium com nosso frango à parmegiana.",
@@ -282,7 +282,7 @@ export const menuData = {
     },
     {
       id: "7-2",
-      name: "Menu Homenagem à Mãe",
+      name: "Menu Homenagem ao Amor",
       price: "R$ 670,00",
       priceValue: 670,
       desc: "Uma explosão de cremosidade com camarões graúdos e queijos nobres.",
@@ -300,7 +300,7 @@ export const menuData = {
     },
     {
       id: "7-3",
-      name: "Menu Mãe, Nossa Rainha",
+      name: "Menu Amor, Nossa Paixão",
       price: "R$ 790,00",
       priceValue: 790,
       desc: "Sofisticação e sabor intenso com nosso filé mignon selecionado.",
@@ -318,7 +318,7 @@ export const menuData = {
     },
     {
       id: "7-5",
-      name: "Menu Tempero de Mãe",
+      name: "Menu Tempero de Amor",
       price: "R$ 750,00",
       priceValue: 750,
       desc: "A união nobre da pescada amarela com o sofisticado arroz de salmão.",
