@@ -7,9 +7,12 @@ interface Message {
   text: string;
 }
 
+const isNewBatch = new Date() >= new Date("2026-06-06T00:00:00");
+const priceText = isNewBatch ? "R$ 279,90" : "R$ 259,90";
+
 const FAQ_OPTIONS = [
   {
-    question: "O valor de R$ 259,90 é para o casal?",
+    question: `O valor de ${priceText} é para o casal?`,
     answer: "Sim! 🍷 O valor contempla o Menu Degustação completo para 2 pessoas. São 5 momentos inesquecíveis para vocês dividirem."
   },
   {
@@ -22,9 +25,12 @@ const FAQ_OPTIONS = [
   },
   {
     question: "Até quando vai esse lote promocional?",
-    answer: "O valor promocional de R$ 259,90 é válido apenas para compras realizadas até o dia 4 de Junho. Garanta logo o seu antes que mude! ⏱️"
+    answer: isNewBatch
+      ? `O lote promocional de R$ 279,90 está ativo a partir do dia 6 de Junho. Garanta logo o seu! ⏱️`
+      : `O valor promocional de R$ 259,90 é válido apenas para compras realizadas até o dia 5 de Junho. Garanta logo o seu antes que mude! ⏱️`
   }
 ];
+
 
 const MiniChefChat = () => {
   const [isOpen, setIsOpen] = useState(false);

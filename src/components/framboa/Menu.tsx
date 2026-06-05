@@ -15,6 +15,11 @@ const Menu = () => {
   const [time, setTime] = useState("");
   const [currentDishIdx, setCurrentDishIdx] = useState(0);
 
+  const isNewBatch = new Date() >= new Date("2026-06-06T00:00:00");
+  const price = isNewBatch ? "R$ 279,90" : "R$ 259,90";
+  const badgeText = isNewBatch ? "Segundo Lote Promocional" : "Valor promocional até 5 de Junho";
+
+
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentDishIdx((prev) => (prev + 1) % DISH_IMAGES.length);
@@ -135,14 +140,14 @@ const Menu = () => {
                 
                 {/* Promotional Badge */}
                 <div className="inline-block bg-[#d4af37] text-white text-[9px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-[2px] font-bold mb-4 shadow-md">
-                  Valor promocional até 4 de Junho
+                  {badgeText}
                 </div>
                 
                 <div className="mb-10 flex flex-col items-center justify-center">
                   <span className="block text-[#2C3E50]/60 text-[10px] tracking-widest uppercase mb-1">Valor do Menu Degustação (Casal)</span>
                   <div className="flex items-center gap-3 mt-1">
                     <span className="text-[#2C3E50]/40 line-through text-lg md:text-xl font-serif">R$ 309,90</span>
-                    <span className="font-serif text-3xl md:text-5xl text-[#8B0000] font-bold">R$ 259,90</span>
+                    <span className="font-serif text-3xl md:text-5xl text-[#8B0000] font-bold">{price}</span>
                   </div>
                 </div>
 
