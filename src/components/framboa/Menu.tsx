@@ -15,9 +15,9 @@ const Menu = () => {
   const [time, setTime] = useState("");
   const [currentDishIdx, setCurrentDishIdx] = useState(0);
 
-  const isNewBatch = new Date() >= new Date("2026-06-06T00:00:00");
+  const isNewBatch = new Date() >= new Date("2026-06-09T00:00:00");
   const price = isNewBatch ? "R$ 279,90" : "R$ 259,90";
-  const badgeText = isNewBatch ? "Segundo Lote Promocional" : "Valor promocional até 5 de Junho";
+  const badgeText = isNewBatch ? "Segundo Lote Promocional" : "Valor promocional prorrogado até 8 de Junho";
 
 
   useEffect(() => {

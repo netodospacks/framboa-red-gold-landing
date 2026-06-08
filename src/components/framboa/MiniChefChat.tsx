@@ -7,7 +7,7 @@ interface Message {
   text: string;
 }
 
-const isNewBatch = new Date() >= new Date("2026-06-06T00:00:00");
+const isNewBatch = new Date() >= new Date("2026-06-09T00:00:00");
 const priceText = isNewBatch ? "R$ 279,90" : "R$ 259,90";
 
 const FAQ_OPTIONS = [
@@ -26,8 +26,8 @@ const FAQ_OPTIONS = [
   {
     question: "Até quando vai esse lote promocional?",
     answer: isNewBatch
-      ? `O lote promocional de R$ 279,90 está ativo a partir do dia 6 de Junho. Garanta logo o seu! ⏱️`
-      : `O valor promocional de R$ 259,90 é válido apenas para compras realizadas até o dia 5 de Junho. Garanta logo o seu antes que mude! ⏱️`
+      ? `O lote promocional de R$ 279,90 está ativo a partir do dia 9 de Junho. Garanta logo o seu! ⏱️`
+      : `O valor promocional de R$ 259,90 é válido apenas para compras realizadas até o dia 8 de Junho. Garanta logo o seu antes que mude! ⏱️`
   }
 ];
 
