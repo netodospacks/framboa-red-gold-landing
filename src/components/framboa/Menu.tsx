@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Clock } from "lucide-react";
 
 const DISH_IMAGES = [
   "/pratos/1.jpeg",
@@ -9,22 +9,64 @@ const DISH_IMAGES = [
   "/pratos/5.jpeg"
 ];
 
+const DEADLINE = new Date(2026, 5, 12, 11, 0, 0); // June 12 at 11:00am
+
+const calcCountdown = () => {
+  const diff = Math.max(0, DEADLINE.getTime() - Date.now());
+  return {
+    h: Math.floor(diff / 3600000),
+    m: Math.floor((diff / 60000) % 60),
+    s: Math.floor((diff / 1000) % 60),
+  };
+};
+
 const Menu = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [name, setName] = useState("");
   const [time, setTime] = useState("");
   const [currentDishIdx, setCurrentDishIdx] = useState(0);
+  const [countdown, setCountdown] = useState(calcCountdown);
 
-  const isNewBatch = new Date() >= new Date("2026-06-09T00:00:00");
-  const price = isNewBatch ? "R$ 279,90" : "R$ 259,90";
-  const badgeText = isNewBatch ? "Segundo Lote Promocional" : "Valor promocional prorrogado até 8 de Junho";
+  // Date logic
+  const now = new Date();
+  const dateJune10 = new Date(2026, 5, 10);
+  const dateJune11 = new Date(2026, 5, 11);
+  const dateJune12 = new Date(2026, 5, 12);
+  const isJune9 = now >= new Date(2026, 5, 9) && now < dateJune10;
+  const isJune10 = now >= dateJune10 && now < dateJune11;
+  const isJune11 = now >= dateJune11 && now < dateJune12;
+  const isJune12BeforeDeadline = now >= dateJune12 && now < DEADLINE;
+  const isOrdersClosed = now >= DEADLINE;
+
+  // Price
+  let price = "R$ 279,90";
+  if (isJune10) price = "R$ 289,90";
+  else if (isJune11 || isJune12BeforeDeadline) price = "R$ 299,90";
+  else if (isOrdersClosed) price = "R$ 299,90";
+
+  // Badge text
+  let badgeText = "Valor promocional até amanhã";
+  if (isJune9) badgeText = "Valor promocional até hoje";
+  else if (isJune10) badgeText = "Valor promocional até hoje";
+  else if (isJune11) badgeText = "Último dia — encerra amanhã às 11h";
+  else if (isJune12BeforeDeadline) badgeText = "⏰ Encomendas encerram hoje às 11h";
+  else if (isOrdersClosed) badgeText = "Encomendas encerradas";
+
+  // Show countdown only on June 12 before 11am
+  const showCountdown = isJune12BeforeDeadline;
 
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const dishTimer = setInterval(() => {
       setCurrentDishIdx((prev) => (prev + 1) % DISH_IMAGES.length);
     }, 3000);
-    return () => clearInterval(timer);
+    return () => clearInterval(dishTimer);
+  }, []);
+
+  // Countdown ticker
+  useEffect(() => {
+    const ticker = setInterval(() => setCountdown(calcCountdown()), 1000);
+    return () => clearInterval(ticker);
   }, []);
 
   const handleCheckout = (e: React.FormEvent) => {
@@ -139,10 +181,33 @@ const Menu = () => {
                 <div className="w-16 h-px bg-[#d4af37]/50 mx-auto mb-6" />
                 
                 {/* Promotional Badge */}
-                <div className="inline-block bg-[#d4af37] text-white text-[9px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-[2px] font-bold mb-4 shadow-md">
+                <div className={`inline-block text-white text-[9px] uppercase tracking-[0.2em] px-4 py-1.5 rounded-[2px] font-bold mb-4 shadow-md ${
+                  isJune12BeforeDeadline ? 'bg-[#8B0000] animate-pulse' : 'bg-[#d4af37]'
+                }`}>
                   {badgeText}
                 </div>
-                
+
+                {/* June 12 Order Deadline Countdown */}
+                {showCountdown && (
+                  <div className="mb-6 mx-auto max-w-xs">
+                    <div className="bg-[#8B0000] rounded-lg px-5 py-4 shadow-[0_4px_20px_rgba(139,0,0,0.4)] border border-[#d4af37]/30">
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <Clock size={13} className="text-[#d4af37]" />
+                        <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-[#d4af37]">Encomendas encerram em</span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2">
+                        {[{ label: 'Horas', value: countdown.h }, { label: 'Min', value: countdown.m }, { label: 'Seg', value: countdown.s }].map((unit) => (
+                          <div key={unit.label} className="flex flex-col items-center bg-white/10 rounded-md py-2">
+                            <span className="font-display text-3xl font-bold text-white tabular-nums">{String(unit.value).padStart(2, '0')}</span>
+                            <span className="text-[9px] uppercase tracking-widest text-white/60 mt-0.5">{unit.label}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-[10px] text-white/60 text-center mt-3 font-serif italic">Último dia para encomendar!</p>
+                    </div>
+                  </div>
+                )}
+
                 <div className="mb-10 flex flex-col items-center justify-center">
                   <span className="block text-[#2C3E50]/60 text-[10px] tracking-widest uppercase mb-1">Valor do Menu Degustação (Casal)</span>
                   <div className="flex items-center gap-3 mt-1">
@@ -151,12 +216,19 @@ const Menu = () => {
                   </div>
                 </div>
 
-                <button 
-                  onClick={() => setIsCheckoutOpen(true)}
-                  className="inline-flex items-center justify-center px-8 py-4 mb-10 w-full sm:w-auto bg-[#8B0000] text-white rounded-[2px] text-xs font-bold uppercase tracking-[0.2em] transition-all hover:bg-[#600000] hover:scale-[1.02] shadow-[0_4px_14px_rgba(139,0,0,0.4)]"
-                >
-                  Garantir Meu Menu
-                </button>
+                {!isOrdersClosed ? (
+                  <button
+                    onClick={() => setIsCheckoutOpen(true)}
+                    className="inline-flex items-center justify-center px-8 py-4 mb-10 w-full sm:w-auto bg-[#8B0000] text-white rounded-[2px] text-xs font-bold uppercase tracking-[0.2em] transition-all hover:bg-[#600000] hover:scale-[1.02] shadow-[0_4px_14px_rgba(139,0,0,0.4)]"
+                  >
+                    Garantir Meu Menu
+                  </button>
+                ) : (
+                  <div className="mb-10 px-6 py-4 border border-[#d4af37]/30 rounded-[2px] text-center">
+                    <p className="text-[#8B0000] font-serif font-bold text-sm">Encomendas encerradas 🍷</p>
+                    <p className="text-[#2C3E50]/60 text-xs mt-1">Obrigado pelo carinho de todos!</p>
+                  </div>
+                )}
 
                 {/* Luxury Horizontal Image Row */}
                 <div className="w-full mb-4 relative">

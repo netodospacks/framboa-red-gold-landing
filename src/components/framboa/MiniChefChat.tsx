@@ -7,29 +7,7 @@ interface Message {
   text: string;
 }
 
-const isNewBatch = new Date() >= new Date("2026-06-09T00:00:00");
-const priceText = isNewBatch ? "R$ 279,90" : "R$ 259,90";
-
-const FAQ_OPTIONS = [
-  {
-    question: `O valor de ${priceText} é para o casal?`,
-    answer: "Sim! 🍷 O valor contempla o Menu Degustação completo para 2 pessoas. São 5 momentos inesquecíveis para vocês dividirem."
-  },
-  {
-    question: "Como funciona a retirada?",
-    answer: "A retirada acontece no dia 12 de Junho, a partir das 15h30min, direto no Restaurante Framboá (no Manaíra Shopping)."
-  },
-  {
-    question: "Preciso cozinhar em casa?",
-    answer: "Não! O menu já vai praticamente pronto. Você receberá um pequeno guia super fácil apenas para finalizar a montagem dos pratos como um verdadeiro Chef! 👨‍🍳"
-  },
-  {
-    question: "Até quando vai esse lote promocional?",
-    answer: isNewBatch
-      ? `O lote promocional de R$ 279,90 está ativo a partir do dia 9 de Junho. Garanta logo o seu! ⏱️`
-      : `O valor promocional de R$ 259,90 é válido apenas para compras realizadas até o dia 8 de Junho. Garanta logo o seu antes que mude! ⏱️`
-  }
-];
+// Dynamic pricing and FAQ options defined inside component
 
 
 const MiniChefChat = () => {
@@ -44,6 +22,65 @@ const MiniChefChat = () => {
   const [showOptions, setShowOptions] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const messagesContainerRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic date calculations
+  const now = new Date();
+  const dateJune9 = new Date(2026, 5, 9);
+  const dateJune10 = new Date(2026, 5, 10);
+  const dateJune11 = new Date(2026, 5, 11);
+  const dateJune12 = new Date(2026, 5, 12);
+  const dateJune12Deadline = new Date(2026, 5, 12, 11, 0, 0);
+
+  const isBeforeJune10 = now < dateJune10;
+  const isJune10 = now >= dateJune10 && now < dateJune11;
+  const isJune11 = now >= dateJune11 && now < dateJune12;
+  const isJune12BeforeDeadline = now >= dateJune12 && now < dateJune12Deadline;
+
+  // PriceText
+  let priceText = "R$ 299,90";
+  if (isBeforeJune10) {
+    priceText = "R$ 279,90";
+  } else if (isJune10) {
+    priceText = "R$ 289,90";
+  } else {
+    priceText = "R$ 299,90";
+  }
+
+  // FAQ option answer for promo deadline
+  let promoDeadlineAnswer = "";
+  if (isBeforeJune10) {
+    const isJune9 = now >= dateJune9;
+    promoDeadlineAnswer = isJune9
+      ? `O valor promocional de R$ 279,90 é válido até hoje, dia 9 de Junho. Garanta o seu antes que o valor suba para R$ 289,90! ⏱️`
+      : `O valor promocional de R$ 279,90 é válido até amanhã, dia 9 de Junho. Garanta o seu antes que o valor suba para R$ 289,90! ⏱️`;
+  } else if (isJune10) {
+    promoDeadlineAnswer = `Atualmente estamos no valor promocional de R$ 289,90, válido até hoje, dia 10 de Junho. Garanta o seu antes que o valor suba para R$ 299,90! ⏱️`;
+  } else if (isJune11) {
+    promoDeadlineAnswer = `Atualmente estamos no valor promocional de R$ 299,90, válido até hoje, dia 11 de Junho. Garanta o seu antes que as encomendas encerrem amanhã! ⏱️`;
+  } else if (isJune12BeforeDeadline) {
+    promoDeadlineAnswer = `As encomendas estão se encerrando! Você tem até as 11:00h de hoje (12 de Junho) para garantir o seu menu por R$ 299,90. Corra! ⏱️`;
+  } else {
+    promoDeadlineAnswer = `As encomendas para o Menu Degustação Amor de Cinema já estão encerradas. Agradecemos a preferência! 🍷`;
+  }
+
+  const faqOptions = [
+    {
+      question: `O valor de ${priceText} é para o casal?`,
+      answer: "Sim! 🍷 O valor contempla o Menu Degustação completo para 2 pessoas. São 5 momentos inesquecíveis para vocês dividirem."
+    },
+    {
+      question: "Como funciona a retirada?",
+      answer: "A retirada acontece no dia 12 de Junho, a partir das 15h30min, direto no Restaurante Framboá (no Manaíra Shopping)."
+    },
+    {
+      question: "Preciso cozinhar em casa?",
+      answer: "Não! O menu já vai praticamente pronto. Você receberá um pequeno guia super fácil apenas para finalizar a montagem dos pratos como um verdadeiro Chef! 👨‍🍳"
+    },
+    {
+      question: "Até quando vai esse valor promocional?",
+      answer: promoDeadlineAnswer
+    }
+  ];
 
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -60,7 +97,7 @@ const MiniChefChat = () => {
     }
   }, [messages, isOpen]);
 
-  const handleOptionClick = (option: typeof FAQ_OPTIONS[0]) => {
+  const handleOptionClick = (option: { question: string; answer: string }) => {
     setShowOptions(false);
     
     // Add user question
@@ -162,7 +199,7 @@ const MiniChefChat = () => {
               <p className="text-[10px] text-center text-[#2C3E50]/50 font-bold uppercase tracking-widest mb-1">
                 Escolha uma pergunta
               </p>
-              {FAQ_OPTIONS.map((opt, i) => (
+              {faqOptions.map((opt, i) => (
                 <button
                   key={i}
                   onClick={() => handleOptionClick(opt)}
