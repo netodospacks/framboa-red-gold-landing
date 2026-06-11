@@ -45,7 +45,7 @@ const Menu = () => {
   let badgeText = "Valor promocional até amanhã";
   if (isJune9) badgeText = "Valor promocional até hoje";
   else if (isJune10) badgeText = "Valor promocional até hoje";
-  else if (isJune11) badgeText = "Último dia — encerra amanhã às 11h";
+  else if (isJune11) badgeText = "Encomendas encerram amanhã às 11h";
   else if (isJune12BeforeDeadline) badgeText = "⏰ Encomendas encerram hoje às 11h";
   else if (isOrdersClosed) badgeText = "Encomendas encerradas";
 
