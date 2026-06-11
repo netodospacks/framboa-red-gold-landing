@@ -36,29 +36,15 @@ const MiniChefChat = () => {
   const isJune11 = now >= dateJune11 && now < dateJune12;
   const isJune12BeforeDeadline = now >= dateJune12 && now < dateJune12Deadline;
 
-  // PriceText
-  let priceText = "R$ 299,90";
-  if (isBeforeJune10) {
-    priceText = "R$ 279,90";
-  } else if (isJune10) {
-    priceText = "R$ 289,90";
-  } else {
-    priceText = "R$ 299,90";
-  }
+  // PriceText (fixed)
+  const priceText = "R$ 289,90";
 
   // FAQ option answer for promo deadline
   let promoDeadlineAnswer = "";
-  if (isBeforeJune10) {
-    const isJune9 = now >= dateJune9;
-    promoDeadlineAnswer = isJune9
-      ? `O valor promocional de R$ 279,90 é válido até hoje, dia 9 de Junho. Garanta o seu antes que o valor suba para R$ 289,90! ⏱️`
-      : `O valor promocional de R$ 279,90 é válido até amanhã, dia 9 de Junho. Garanta o seu antes que o valor suba para R$ 289,90! ⏱️`;
-  } else if (isJune10) {
-    promoDeadlineAnswer = `Atualmente estamos no valor promocional de R$ 289,90, válido até hoje, dia 10 de Junho. Garanta o seu antes que o valor suba para R$ 299,90! ⏱️`;
-  } else if (isJune11) {
-    promoDeadlineAnswer = `Atualmente estamos no valor promocional de R$ 299,90, válido até hoje, dia 11 de Junho. Garanta o seu antes que as encomendas encerrem amanhã! ⏱️`;
+  if (isJune11 || isJune10) {
+    promoDeadlineAnswer = `Estamos com o valor especial de R$ 289,90 o casal! As encomendas encerram no dia 12 de Junho às 11h. Garanta o seu! ⏱️`;
   } else if (isJune12BeforeDeadline) {
-    promoDeadlineAnswer = `As encomendas estão se encerrando! Você tem até as 11:00h de hoje (12 de Junho) para garantir o seu menu por R$ 299,90. Corra! ⏱️`;
+    promoDeadlineAnswer = `As encomendas estão se encerrando! Você tem até as 11:00h de hoje (12 de Junho) para garantir o seu menu por R$ 289,90. Corra! ⏱️`;
   } else {
     promoDeadlineAnswer = `As encomendas para o Menu Degustação Amor de Cinema já estão encerradas. Agradecemos a preferência! 🍷`;
   }

@@ -38,11 +38,8 @@ const Menu = () => {
   const isJune12BeforeDeadline = now >= dateJune12 && now < DEADLINE;
   const isOrdersClosed = now >= DEADLINE;
 
-  // Price
-  let price = "R$ 279,90";
-  if (isJune10) price = "R$ 289,90";
-  else if (isJune11 || isJune12BeforeDeadline) price = "R$ 299,90";
-  else if (isOrdersClosed) price = "R$ 299,90";
+  // Price (fixed)
+  const price = "R$ 289,90";
 
   // Badge text
   let badgeText = "Valor promocional até amanhã";
